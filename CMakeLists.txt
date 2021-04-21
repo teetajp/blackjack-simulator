@@ -33,7 +33,7 @@ endif()
 FetchContent_Declare(
         catch2
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v2.x
+        GIT_TAG        v2.11.1
 )
 
 # Adds Catch2 testing library
@@ -47,15 +47,18 @@ endif()
 get_filename_component(CINDER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../" ABSOLUTE)
 get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
-list(APPEND CORE_SOURCE_FILES src/core/blackjack.cc)
+include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
+
+list(APPEND CORE_SOURCE_FILES src/core/game_engine.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
-        src/visualizer/naive_bayes_app.cc
-        src/visualizer/sketchpad.cc)
+        src/blackjack_cli.cc
+        src/blackjack_app.cc)
 
-list(APPEND TEST_FILES tests/test_image_processor.cc)
+list(APPEND TEST_FILES tests/test_game_engine.cc
+        tests/test_blackjack_cli.cc)
 
-add_executable(train-model apps/game_cli.cc ${CORE_SOURCE_FILES})
+add_executable(blackjack-cli apps/run_blackjack_cli.cc ${CORE_SOURCE_FILES})
 target_include_directories(blackjack-cli PRIVATE include)
 
 ci_make_app(
@@ -74,5 +77,5 @@ ci_make_app(
 )
 
 if(MSVC)
-    set_property(TARGET naive-bayes-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
+    set_property(TARGET blackjack-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
 endif()
