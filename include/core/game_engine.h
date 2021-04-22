@@ -24,27 +24,36 @@ class GameEngine {
  public:
   GameEngine();
   
+  /** Resets all the hands and bets and starts the round */
+  void StartRound();
+
+  /** Shuffles the deck */
   void ShuffleDeck();
   
-  void StartRound();
+  /** Prompts all players to post a bet*/
+  void RequestBets();
   
-  void GetBets();
-  
+  /** Deals cards to all the players in order then the dealer */
   void DealCards();
   
+  /** Calls all players player and the dealer to check for blackjack and act correspondingly */
   void CheckBlackjack();
   
+  /** Calls the players, in order, to take hit, stand, or double down */
   void PlayerPlays();
   
+  /** Calls the dealer to hit or stand until they reach a hand total of 17 or more */
   void DealerPlays();
   
+  /** Check whether each player won, lost/bust, or push and pay/take their bets accordingly */
   void SettleBets();
   
+  /** Resets all the players and the dealer's hand */
   void ResetHands();
   
  private:
-  Dealer dealer_;
-  Deck deck_;
-  vector<Player> players_;
+  Deck deck_; // deck of cards in play
+  Dealer dealer_; // the person assigned as dealer
+  vector<Player> players_; // the players who are playing in the round
 };
 } // namespace blackjack
