@@ -1,4 +1,4 @@
-#include <core/game_engine.h>
+#include <core/deck.h>
 
 namespace blackjack {
 
