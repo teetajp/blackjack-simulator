@@ -6,14 +6,14 @@ using blackjack::Card;
 
 TEST_CASE("Card Constructor") {
   Card::Suit suit = Card::Diamonds;
-  Card::Value value = Card::Ace;
-  Card card(suit, value);
+  Card::Rank rank = Card::Ace;
+  Card card(suit, rank);
   SECTION("GetSuit") {
     REQUIRE(card.GetSuit() == Card::Diamonds);
   }
-  SECTION("GetValue") {
-    REQUIRE(card.GetValue() == Card::Ace);
-    REQUIRE(card.GetValue() == 1);
+  SECTION("GetRank") {
+    REQUIRE(card.GetRank() == Card::Ace);
+    REQUIRE(card.GetRank() == 1);
   }
 }
 
@@ -22,7 +22,7 @@ TEST_CASE("Enums work correctly") {
     REQUIRE(Card::Hearts != Card::Clubs);
     REQUIRE(Card::Spades == Card::Spades);
   }
-  SECTION("Values") {
+  SECTION("Ranks") {
     // Note: Ace being worth 1 or 11 will be handled by engine
     SECTION("Inequality") {
       REQUIRE(Card::Ace < Card::Two);

@@ -9,8 +9,8 @@ Deck::Deck() : next_card_index(0) {
 void Deck::AddDeck() {
   // Populate the deck with 52 cards, with each of the 4 suits containing 13 cards
   for (Card::Suit suit : suits) {
-    for (Card::Value value : values) {
-      cards_.emplace_back(Card(suit, value));
+    for (Card::Rank rank : ranks) {
+      cards_.emplace_back(Card(suit, rank));
     }
   }
 }
