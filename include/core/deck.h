@@ -29,6 +29,7 @@ class Deck {
   void AddDeck();
   
   /** Draws the next card from the top of the deck
+   *    Throws std::out_of_range exception if function is called when there is no card left
    * 
    * @return a card from the top of the deck
    */

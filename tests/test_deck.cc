@@ -56,5 +56,29 @@ TEST_CASE("Add Deck") {
 }
 
 // TEST_CASE("Shuffle")
-// TEST_CASE("DrawCard")
-// TEST_CASE("CalculateRemainigCards")
+ TEST_CASE("DrawCard") {
+  Deck deck;
+  SECTION("Draw more than there are cards in the deck") {
+    for (size_t i = 0; i < 52; i++) {
+      deck.DrawCard();
+    }
+    REQUIRE_THROWS_AS(deck.DrawCard(), std::out_of_range);
+  }
+}
+ TEST_CASE("CalculateRemainingCards") {
+  Deck deck;
+  REQUIRE(deck.CalculateRemainingCards() == 52);
+  
+  SECTION("After drawing a card") {
+    deck.DrawCard();
+    REQUIRE(deck.CalculateRemainingCards() == 51);
+  }
+  SECTION("After adding a deck") {
+    deck.AddDeck();
+    REQUIRE(deck.CalculateRemainingCards() == 104);
+  }
+  SECTION("After shuffling") {
+    deck.Shuffle();
+    REQUIRE(deck.CalculateRemainingCards() == 52);
+  }
+}
