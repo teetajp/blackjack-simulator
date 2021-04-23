@@ -8,7 +8,6 @@ void Hand::AddCard(const Card& card) {
   cards_.push_back(card);
   if (card.GetRank() == Card::Ace)
     has_ace_ = true;
-  // todo: throw an error if card is added while we have blackjack?
 }
 
 void Hand::ResetHand() {
