@@ -1,6 +1,7 @@
 #pragma once
 
-#include <core/card.h>
+#include "card.h"
+#include "hand.h"
 #include <string>
 
 using std::string;
@@ -15,9 +16,6 @@ class Player {
  public:
   /** Default constructor */
   Player();
-    
-  /** Calculates the total value of the cards in the player's hand */
-  size_t CalculateHandTotal() const;
   
   /** When the player wins the round by having a total more than the dealer or the dealer busts,
    *  Adds the double the bet to the player's balance and resets the bet to zero.
@@ -46,11 +44,6 @@ class Player {
    */
   void PostBet(size_t bet);
   
-  /** Add a card to the player's hand */
-  void AddCard(Card card);
-
-  /** Resets the player's hand */
-  void ResetHand();
 
   /** Gets the amount the player bet in the round */
   size_t GetBet() const;
@@ -60,11 +53,11 @@ class Player {
   
   // todo: decide whether to keep as vect of Card or string
   // determine how this will interact with the cli and gui
-  vector<Card> GetHand() const;
+  Hand GetHand() const;
  private:
   string name_; // the name of the player
-  vector<Card> hand_; // the cards in the player's hand
   size_t balance; // the amount of money the player has
   size_t bet_; // the amount that the player bet in the round
+  Hand hand_; // the player's hand containing their cards
 };
 } // namespace naivebayes

@@ -1,4 +1,8 @@
-//
-// Created by Teetaj on 4/21/2021.
-//
+#include <core/dealer.h>
 
+namespace blackjack {
+
+ Dealer::Dealer() {
+   
+ }
+} // namespace blackjack

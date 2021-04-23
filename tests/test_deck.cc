@@ -84,9 +84,11 @@ void CheckAllCards(Deck& deck, size_t num_decks) {
     suits_count[card.GetSuit()]++;
     ranks_count[card.GetRank()]++;
   }
+  
   for (Card::Suit suit : deck.suits) {
     REQUIRE(suits_count[suit] == num_decks * 13); // 13 cards/suit x num_deck decks = 13 * num_deck cards per suit in deck
   }
+  
   for (Card::Rank rank : deck.ranks) {
     if (rank < 10) { // All non-face/ten card
       REQUIRE(ranks_count[rank] == num_decks * 4); // 4 cards/rank x num_deck decks = 4 * num_deck cards per rank in deck

@@ -51,6 +51,7 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
 list(APPEND CORE_SOURCE_FILES src/core/card.cc
         src/core/deck.cc
+        src/core/hand.cc
         src/core/dealer.cc
         src/core/player.cc
         src/core/game_engine.cc)
@@ -61,6 +62,7 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
 
 list(APPEND TEST_FILES tests/test_card.cc
         tests/test_deck.cc
+        tests/test_hand.cc
         tests/test_game_engine.cc)
 
 add_executable(blackjack-cli apps/run_blackjack_cli.cc ${CORE_SOURCE_FILES})
