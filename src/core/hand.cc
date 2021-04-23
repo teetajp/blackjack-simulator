@@ -2,20 +2,17 @@
 
 namespace blackjack {
 
-Hand::Hand() : value_(0) {}
+Hand::Hand() : has_ace_(false) {}
 
 void Hand::AddCard(Card card) {
   cards_.push_back(card);
-  CalculateHandValue();
+  if (card.GetRank() == Card::Ace)
+    has_ace_ = true;
 }
 
 void Hand::ResetHand() {
   cards_.clear();
-  value_ = 0;
-}
-
-size_t Hand::GetHandValue() const {
-  return value_;
+  has_ace_ = false;
 }
 
 vector<Card> Hand::GetCards() const {
@@ -29,16 +26,23 @@ bool Hand::HasBlackjack() const {
 
   /* According to Blackjack rules, 
    * a blackjack is when the hand's first two cards contains and Ace and a ten-valued card */
-  if ((cards_[0].GetRank() == Card::Ace || cards_[1].GetRank() == Card::Ace) &&
-      (cards_[0].GetRank() == 10 || cards_[1].GetRank() == 10)) {
-    return true;
-  }
-  return false;
+  return has_ace_ && (cards_[0].GetRank() == 10 || cards_[1].GetRank() == 10);
 }
 
-void Hand::CalculateHandValue() {
+size_t Hand::CalculateHandValue() {
+  size_t total_value = 0;
   for (const Card& card : cards_) {
-    value_ += card.GetRank();
+    size_t card_value = card.GetRank();
+    
+    if (card_value == Card::Ace && total_value + kMaxAceValue <= kMaxHandValue)
+      card_value = kMaxAceValue; // Ace counted as 11 if it doesn't make the hand go bust
+      
+    total_value += card_value;
   }
+  return total_value;
+}
+
+bool Hand::HasAce() const {
+  return has_ace_;
 }
 } // namespace blackjack

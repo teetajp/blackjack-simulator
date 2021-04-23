@@ -15,13 +15,20 @@ TEST_CASE("Add Card") {
   Card card(Card::Clubs, Card::Seven);
   hand.AddCard(card);
   REQUIRE(hand.GetCards().size() == 1);
-  REQUIRE(hand.GetCards().at(0).GetSuit() == Card::Clubs);
-  REQUIRE(hand.GetCards().at(0).GetRank() == Card::Seven);  
+  REQUIRE(hand.GetCards().at(0) == card);
 }
 
 TEST_CASE("Reset Hand") {
   Hand hand;
-  Card card(Card::Hearts, Card::Queen);
-  hand.AddCard(card);
+  hand.AddCard(Card(Card::Hearts, Card::Queen));
+  hand.ResetHand();
+  REQUIRE(hand.GetCards().empty());
+  REQUIRE(hand.GetHandValue() == 0);
+}
+
+TEST_CASE("CalculateHandValue") {
+  // Private method so do it by adding cards and getting the hand value
+  Hand hand;
+  hand.AddCard(Card(Card::Hearts, Card::Queen));
   
 }

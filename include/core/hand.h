@@ -17,9 +17,9 @@ class Hand {
 
   /** Resets the hand */
   void ResetHand();
-  
-  /** Returns the total value of the cards in the hand */
-  size_t GetHandValue() const;
+
+  /** Calculates the total value of the cards in the hand and stores it */
+  size_t CalculateHandValue();
   
   /** Returns a copied vector of cards in the hand */
   vector<Card> GetCards() const;
@@ -30,11 +30,13 @@ class Hand {
     */
   bool HasBlackjack() const;
   
+  /** Returns true if the hand has an ace */
+  bool HasAce() const;
+  
  private:
+  static const size_t kMaxHandValue = 21; // the max hand value before going bust
+  static const size_t kMaxAceValue = 11; // the higher of the values for ace (can be 1 or 11)
   vector<Card> cards_; // the cards in the hand
-  size_t value_; // the value of the hand
-
-  /** Calculates the total value of the cards in the hand and stores it */
-  void CalculateHandValue();
+  bool has_ace_; // whether the hand has an ace
 };
 } // namespace blackjack
