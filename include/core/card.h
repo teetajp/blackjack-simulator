@@ -34,7 +34,7 @@ class Card {
 
   /** Returns the card rank */
   Rank GetRank() const;
-
+  
  private:
   Suit suit_; // the suit of the card
   Rank rank_; // the rank of the card and its corresponding value

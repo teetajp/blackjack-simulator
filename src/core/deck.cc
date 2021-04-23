@@ -23,8 +23,9 @@ const Card& Deck::DrawCard() {
 }
 
 void Deck::Shuffle() {
-  // Use the built in shuffle function to shuffle our vector
-  std::random_shuffle(cards_.begin(), cards_.end());
+  // Use the built in shuffle function to rearranged our vector of cards
+  size_t seed = (size_t) std::chrono::system_clock::now().time_since_epoch().count(); // obtain a time-based seed
+  std::shuffle(cards_.begin(), cards_.end(), std::default_random_engine(seed));
   next_card_index = 0;
 }
 
