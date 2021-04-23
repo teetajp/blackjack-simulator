@@ -59,7 +59,8 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/blackjack_cli.cc
         src/blackjack_app.cc)
 
-list(APPEND TEST_FILES tests/test_game_engine.cc
+list(APPEND TEST_FILES tests/test_card.cc
+        tests/test_game_engine.cc
         tests/test_blackjack_cli.cc)
 
 add_executable(blackjack-cli apps/run_blackjack_cli.cc ${CORE_SOURCE_FILES})

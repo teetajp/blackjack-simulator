@@ -2,8 +2,10 @@
 
 #include <core/card.h>
 #include <vector>
+#include <algorithm>
 
 using std::vector;
+using blackjack::Card;
 
 namespace blackjack {
 
@@ -12,6 +14,12 @@ namespace blackjack {
  */
 class Deck {
  public:
+  // Need this to populate deck since we can't use ranged-based for loop for enums
+  // Source: https://stackoverflow.com/questions/35313043/how-to-use-enum-class-values-as-part-of-for-loop
+  const vector<Card::Suit> suits = {Card::Clubs, Card::Diamonds, Card::Hearts, Card::Spades}; // all possible suits
+  const vector<Card::Value> values = {Card::Ace, Card::Two, Card::Three, Card::Four, Card::Five, Card::Six, Card::Seven,
+                                      Card::Eight, Card::Nine, Card::Ten, Card::Jack, Card::Queen, Card::King}; // all possible values
+  
   /**
    * Default constructor
    */
@@ -26,7 +34,7 @@ class Deck {
    * 
    * @return a card from the top of the deck
    */
-  Card GetCard();
+  const Card& GetCard() const;
   
   /**
    * Adds another 52-card deck to the current deck
