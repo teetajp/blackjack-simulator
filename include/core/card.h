@@ -35,6 +35,12 @@ class Card {
   /** Returns the card rank */
   Rank GetRank() const;
   
+  /** Equal to operator overload - check if suit AND rank is the same */
+  friend bool operator== (const Card& first, const Card& second);
+
+  /** Not equal to operator overload - check if either suit or rank is not the same */
+  friend bool operator!= (const Card& first, const Card& second);
+  
  private:
   Suit suit_; // the suit of the card
   Rank rank_; // the rank of the card and its corresponding value

@@ -39,3 +39,26 @@ TEST_CASE("Enums work correctly") {
     }
   }
 }
+
+TEST_CASE("Equals/not equals operator overload") {
+  SECTION("Same suit and rank") {
+    Card first(Card::Hearts, Card::Queen);
+    Card second(Card::Hearts, Card::Queen);
+    REQUIRE(first == second);
+    REQUIRE_FALSE(first != second);
+  }
+  SECTION("Different suit and rank") {
+    SECTION("Different suit") {
+      Card first(Card::Hearts, Card::Queen);
+      Card second(Card::Spades, Card::Queen);
+      REQUIRE_FALSE(first == second);
+      REQUIRE(first != second);
+    }
+    SECTION("Different rank") {
+      Card first(Card::Spades, Card::Ace);
+      Card second(Card::Spades, Card::King);
+      REQUIRE_FALSE(first == second);
+      REQUIRE(first != second);
+    }
+  }
+}

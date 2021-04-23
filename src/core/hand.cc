@@ -40,6 +40,5 @@ void Hand::CalculateHandValue() {
   for (const Card& card : cards_) {
     value_ += card.GetRank();
   }
-  
 }
 } // namespace blackjack
