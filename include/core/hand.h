@@ -13,13 +13,13 @@ class Hand {
   Hand();
   
   /** Add a card to the hand */
-  void AddCard(Card card); // todo: make card a reference?
+  void AddCard(const Card& card);
 
   /** Resets the hand */
   void ResetHand();
 
   /** Calculates the total value of the cards in the hand and stores it */
-  size_t CalculateHandValue();
+  size_t CalculateHandValue() const;
   
   /** Returns a copied vector of cards in the hand */
   vector<Card> GetCards() const;
