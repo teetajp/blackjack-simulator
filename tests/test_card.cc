@@ -4,7 +4,7 @@
 
 using blackjack::Card;
 
-TEST_CASE("Constructor") {
+TEST_CASE("Card Constructor") {
   Card::Suit suit = Card::Diamonds;
   Card::Value value = Card::Ace;
   Card card(suit, value);

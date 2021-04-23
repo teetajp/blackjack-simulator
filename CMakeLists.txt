@@ -60,6 +60,7 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/blackjack_app.cc)
 
 list(APPEND TEST_FILES tests/test_card.cc
+        tests/test_deck.cc
         tests/test_game_engine.cc
         tests/test_blackjack_cli.cc)
 
