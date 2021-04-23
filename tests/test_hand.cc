@@ -29,30 +29,26 @@ TEST_CASE("Reset Hand") {
 TEST_CASE("CalculateHandValue") {
   // Private method so do it by adding cards and getting the hand value
   Hand hand;
-  
+
   SECTION("One card") {
     hand.AddCard(Card(Card::Hearts, Card::Seven));
     REQUIRE(hand.CalculateHandValue() == 7);
-  }
-  SECTION("Multiple cards") {
+  }SECTION("Multiple cards") {
     hand.AddCard(Card(Card::Hearts, Card::Seven));
     hand.AddCard(Card(Card::Clubs, Card::Two));
     hand.AddCard(Card(Card::Diamonds, Card::King));
     REQUIRE(hand.CalculateHandValue() == 19);
-  }
-  SECTION("Soft Ace (1 Ace + any non-Ace card)") {
+  }SECTION("Soft Ace (1 Ace + any non-Ace card)") {
     SECTION("Ace + 10-valued card (Blackjack)") {
       hand.AddCard(Card(Card::Spades, Card::Ace));
       hand.AddCard(Card(Card::Clubs, Card::Jack));
       REQUIRE(hand.CalculateHandValue() == 21);
-    }
-    SECTION("Ace + non-10-valued card") {
+    }SECTION("Ace + non-10-valued card") {
       hand.AddCard(Card(Card::Spades, Card::Ace));
       hand.AddCard(Card(Card::Clubs, Card::Six));
       REQUIRE(hand.CalculateHandValue() == 17);
     }
-  }
-  SECTION("Hard Ace (Ace counted as 1 since counting it as 11 would make hand go bust)") {
+  }SECTION("Hard Ace (Ace counted as 1 since counting it as 11 would make hand go bust)") {
     hand.AddCard(Card(Card::Spades, Card::Ace));
     hand.AddCard(Card(Card::Clubs, Card::Nine));
     hand.AddCard(Card(Card::Clubs, Card::Two));
@@ -65,8 +61,7 @@ TEST_CASE("HasAce") {
   SECTION("Hand contains Ace") {
     hand.AddCard(Card(Card::Clubs, Card::Ace));
     REQUIRE(hand.HasAce());
-  }
-  SECTION("Hand doesn't contain Ace") {
+  }SECTION("Hand doesn't contain Ace") {
     hand.AddCard(Card(Card::Clubs, Card::Four));
     REQUIRE_FALSE(hand.HasAce());
   }
@@ -78,14 +73,12 @@ TEST_CASE("HasBlackjack") {
     hand.AddCard(Card(Card::Diamonds, Card::Ace));
     hand.AddCard(Card(Card::Spades, Card::Ten));
     REQUIRE(hand.HasBlackjack());
-  }
-  SECTION("Hand value adds up to 21 but is not blackjack") {
+  }SECTION("Hand value adds up to 21 but is not blackjack") {
     hand.AddCard(Card(Card::Diamonds, Card::Ace));
     hand.AddCard(Card(Card::Spades, Card::Six));
     hand.AddCard(Card(Card::Hearts, Card::Five));
     REQUIRE_FALSE(hand.HasBlackjack());
-  }
-  SECTION("Hand contains Ace and a ten-valued card but its not the first two cards") {
+  }SECTION("Hand contains Ace and a ten-valued card but its not the first two cards") {
     hand.AddCard(Card(Card::Diamonds, Card::Jack));
     hand.AddCard(Card(Card::Spades, Card::Two));
     hand.AddCard(Card(Card::Hearts, Card::Ace));

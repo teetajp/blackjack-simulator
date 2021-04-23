@@ -2,7 +2,7 @@
 
 namespace blackjack {
 
- Dealer::Dealer() {
-   
- }
+Dealer::Dealer() {
+
+}
 } // namespace blackjack

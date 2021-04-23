@@ -15,7 +15,7 @@ void Deck::AddDeck() {
   }
 }
 
-const Card& Deck::DrawCard() {
+const Card &Deck::DrawCard() {
   if (next_card_index >= cards_.size()) {
     throw std::out_of_range("No cards remaining to draw.");
   }

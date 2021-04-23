@@ -11,16 +11,16 @@ class Hand {
  public:
   /** Default constructor */
   Hand();
-  
+
   /** Add a card to the hand */
-  void AddCard(const Card& card);
+  void AddCard(const Card &card);
 
   /** Resets the hand */
   void ResetHand();
 
   /** Calculates the total value of the cards in the hand and stores it */
   size_t CalculateHandValue() const;
-  
+
   /** Returns a copied vector of cards in the hand */
   vector<Card> GetCards() const;
 
@@ -29,10 +29,10 @@ class Hand {
     * @return true if the hand contains a blackjack, else false
     */
   bool HasBlackjack() const;
-  
+
   /** Returns true if the hand has an ace */
   bool HasAce() const;
-  
+
  private:
   static const size_t kMaxHandValue = 21; // the max hand value before going bust
   static const size_t kMaxAceValue = 11; // the higher of the values for ace (can be 1 or 11)

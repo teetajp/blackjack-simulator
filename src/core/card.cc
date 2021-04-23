@@ -12,11 +12,11 @@ Card::Rank Card::GetRank() const {
   return rank_;
 }
 
-bool operator== (const Card& first, const Card& second) {
+bool operator==(const Card &first, const Card &second) {
   return first.GetSuit() == second.GetSuit() && first.GetRank() == second.GetRank();
 }
 
-bool operator!= (const Card& first, const Card& second) {
+bool operator!=(const Card &first, const Card &second) {
   return first.GetSuit() != second.GetSuit() || first.GetRank() != second.GetRank();
 }
 } // namespace blackjack
