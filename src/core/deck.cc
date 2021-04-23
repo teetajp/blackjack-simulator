@@ -15,7 +15,7 @@ void Deck::AddDeck() {
   }
 }
 
-const Card& Deck::GetCard() {
+const Card& Deck::DrawCard() {
   return cards_[next_card_index++]; // Increment the card index after returning the card on top
 }
 

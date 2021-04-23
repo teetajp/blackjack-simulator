@@ -34,7 +34,7 @@ TEST_CASE("Add Deck") {
     size_t diamonds = 0;
     size_t hearts = 0;
     size_t spades = 0;
-    for (size_t i = 0; i < 102; i++) {
+    for (size_t i = 0; i < 104; i++) {
       const Card::Suit curr_suit = deck.DrawCard().GetSuit();
       
       if (curr_suit == Card::Clubs) {
