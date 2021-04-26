@@ -50,6 +50,13 @@ class GameEngine {
 
   /** Resets all the players and the dealer's hand */
   void ResetHands();
+  
+  /** Adds a player to the game
+   * 
+   * @param name the name of the player
+   * @param buy_in how much chips the player wants to buy and play with
+   */
+  void AddPlayer(string name, size_t buy_in);
 
  private:
   Deck deck_; // deck of cards in play

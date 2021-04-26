@@ -3,8 +3,8 @@
 #include <core/card.h>
 #include <vector>
 #include <algorithm>
-#include <random>       // std::default_random_engine
-#include <chrono>       // std::chrono::system_clock
+#include <random>
+#include <chrono>
 
 using std::vector;
 using blackjack::Card;
