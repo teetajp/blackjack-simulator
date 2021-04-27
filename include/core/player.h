@@ -16,6 +16,13 @@ class Player {
  public:
   /** Default constructor */
   Player();
+  
+  /** Constructor with specified name and balance
+   * 
+   * @param name the name of the player
+   * @param balance how much the player is beginning the game with
+   */
+  Player(string name, size_t balance);
 
   /** When the player wins the round by having a total more than the dealer or the dealer busts,
    *  Adds the double the bet to the player's balance and resets the bet to zero.

@@ -3,6 +3,23 @@
 namespace blackjack {
 GameEngine::GameEngine() : dealer_(&deck_) {}
 
+void GameEngine::AddPlayer(string name, size_t buy_in) {
+  // Check for existing user
+  for (const Player& player : players_) {
+    if (player.GetName() == name) {
+      throw std::invalid_argument("Player with this name already exists.");
+    }
+  }
+  players_.emplace_back(Player(name, buy_in));  
+}
+
+const Player& GameEngine::GetPlayer(string name) const {
+  for (const Player& player : players_) {
+    if (player.GetName() == name)
+      return player;
+  }
+}
+
 void GameEngine::StartRound() {
   deck_.Shuffle();
   RequestBets();

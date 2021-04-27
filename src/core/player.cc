@@ -3,7 +3,9 @@
 namespace blackjack {
 
 // todo: remove magic numbers
-Player::Player() : name_("Player"), balance_(100), bet_(0), is_turn_done(false) {}
+Player::Player() : name_("Player"), balance_(100), bet_(0), turn_done(false) {}
+
+Player::Player(string name, size_t balance) : name_(name), balance_(balance), bet_(0), turn_done(false) {}
 
 size_t Player::GetBet() const {
   return bet_;

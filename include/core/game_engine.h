@@ -24,11 +24,25 @@ class GameEngine {
  public:
   GameEngine();
 
+  /** Adds a player to the game
+   * 
+   * @param name the name of the player
+   * @param buy_in how much chips the player wants to buy and play with
+   */
+  void AddPlayer(string name, size_t buy_in);
+  
+  /** Gets the player with the specified name
+   * 
+   * @param name the name of the player to get
+   * @return a reference to the player
+   */
+  const Player& GetPlayer(string name) const;
+  
   /** Resets all the hands and bets and starts the round */
   void StartRound();
 
   /** Prompts all players to post a bet*/
-  void RequestBets();
+  void RequestBets(); // todo: add parameter that takes inputstream?
 
   /** Deals cards to all the players in order then the dealer */
   void DealCards();
@@ -42,7 +56,7 @@ class GameEngine {
   bool CheckBlackjack();
 
   /** Calls the players, in order, to take hit, stand, or double down */
-  void PlayerPlays();
+  void PlayerPlays(); // todo: add parameter to input info?
 
   /** Calls the dealer to hit or stand until they reach a hand total of 17 or more */
   void DealerPlays();
@@ -53,13 +67,6 @@ class GameEngine {
   /** Resets the dealer's and all the players' hand */
   void ResetHands();
   
-  /** Adds a player to the game
-   * 
-   * @param name the name of the player
-   * @param buy_in how much chips the player wants to buy and play with
-   */
-  void AddPlayer(string name, size_t buy_in);
-
  private:
   Deck deck_; // deck of cards in play
   Dealer dealer_; // the person assigned as dealer
