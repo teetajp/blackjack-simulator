@@ -27,17 +27,19 @@ class GameEngine {
   /** Resets all the hands and bets and starts the round */
   void StartRound();
 
-  /** Shuffles the deck */
-  void ShuffleDeck();
-
   /** Prompts all players to post a bet*/
   void RequestBets();
 
   /** Deals cards to all the players in order then the dealer */
   void DealCards();
 
-  /** Calls all players player and the dealer to check for blackjack and act correspondingly */
-  void CheckBlackjack();
+  /** Checks whether the dealer has blackjack, if the dealer does,
+   *  then settle the bets with the players depending on whether player also has blackjack.
+   *  If dealer doesn't have blackjack, then pay any player with blackjack off accordingly.
+   * 
+   * @return true if the dealer has blackjack (implies round would be over), false otherwise.
+   */
+  bool CheckBlackjack();
 
   /** Calls the players, in order, to take hit, stand, or double down */
   void PlayerPlays();
@@ -47,8 +49,8 @@ class GameEngine {
 
   /** Check whether each player won, lost/bust, or push and pay/take their bets accordingly */
   void SettleBets();
-
-  /** Resets all the players and the dealer's hand */
+  
+  /** Resets the dealer's and all the players' hand */
   void ResetHands();
   
   /** Adds a player to the game

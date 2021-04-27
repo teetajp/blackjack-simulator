@@ -3,7 +3,7 @@
 namespace blackjack {
 
 // todo: remove magic numbers
-Player::Player() : name_("Player"), balance_(100), bet_(0) {}
+Player::Player() : name_("Player"), balance_(100), bet_(0), is_turn_done(false) {}
 
 size_t Player::GetBet() const {
   return bet_;
@@ -40,5 +40,9 @@ void Player::PostBet(size_t bet) {
 Hand& Player::GetHand() {
   Hand& hand = hand_;
   return hand;
+}
+
+bool Player::IsTurnDone() const {
+  return turn_done;
 }
 } // namespace blackjack

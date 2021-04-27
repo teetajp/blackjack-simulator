@@ -47,8 +47,7 @@ class Deck {
   size_t CalculateRemainingCards() const;
 
  private:
-  vector<Card>
-      cards_; // a list of cards where the beginning represents the top and the end represents the bottom of the deck
+  vector<Card> cards_; // a list of cards where the beginning represents the top and the end represents the bottom of the deck
   size_t next_card_index; // the index of the next card in the deck
 };
 } // namespace blackjack

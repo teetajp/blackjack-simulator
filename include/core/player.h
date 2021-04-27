@@ -49,14 +49,21 @@ class Player {
 
   /** Gets the name of the player */
   string GetName() const;
-
-  // todo: decide whether to keep as vect of Card or string
-  // determine how this will interact with the cli and gui
-  Hand GetHand() const;
+  
+  /** Gets the player's hand */
+  Hand& GetHand();
+  
+  /** Returns whether the player's turn is done for the round*/
+  bool IsTurnDone() const;
+  
+  /** Set whether the player's turn is done */
+  void SetTurnDone(bool turn_done);
+  
  private:
   string name_; // the name of the player
-  size_t balance; // the amount of money the player has
+  size_t balance_; // the amount of money the player has
   size_t bet_; // the amount that the player bet in the round
   Hand hand_; // the player's hand containing their cards
+  bool turn_done; // whether the player's turn is done for the round
 };
 } // namespace naivebayes
