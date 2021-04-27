@@ -1,9 +1,10 @@
 #include <core/game_engine.h>
 
 namespace blackjack {
-GameEngine::GameEngine() : dealer_(&deck_) {}
 
-void GameEngine::AddPlayer(string name, size_t buy_in) {
+GameEngine::GameEngine()= default;
+
+void GameEngine::AddPlayer(string name, float buy_in) {
   // Check for existing user
   for (const Player& player : players_) {
     if (player.GetName() == name) {
@@ -18,6 +19,7 @@ const Player& GameEngine::GetPlayer(string name) const {
     if (player.GetName() == name)
       return player;
   }
+  throw std::invalid_argument("Player does not exist");
 }
 
 void GameEngine::StartRound() {
@@ -79,7 +81,7 @@ void GameEngine::PlayerPlays() {
 }
 
 void GameEngine::DealerPlays() {
-  dealer_.DealerPlay();
+  dealer_.DealerPlay(&deck_);
 }
 
 void GameEngine::SettleBets() {
@@ -114,6 +116,7 @@ void GameEngine::ResetHands() {
   // Reset all player's hand
   for (Player& player : players_) {
     player.GetHand().ResetHand();
+    player.SetTurnDone(false);
   }
   dealer_.GetHand().ResetHand();
 }

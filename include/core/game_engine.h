@@ -29,7 +29,7 @@ class GameEngine {
    * @param name the name of the player
    * @param buy_in how much chips the player wants to buy and play with
    */
-  void AddPlayer(string name, size_t buy_in);
+  void AddPlayer(string name, float buy_in);
   
   /** Gets the player with the specified name
    * 

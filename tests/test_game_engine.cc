@@ -7,7 +7,7 @@ TEST_CASE("Constructor") {
   REQUIRE_NOTHROW(GameEngine());
 }
 
-TEST_CASE("AddPlayer");
+//TEST_CASE("AddPlayer");
 
 //TEST_CASE("StartRound");
 //

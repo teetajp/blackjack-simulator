@@ -22,7 +22,7 @@ class Player {
    * @param name the name of the player
    * @param balance how much the player is beginning the game with
    */
-  Player(string name, size_t balance);
+  Player(string name, float balance);
 
   /** When the player wins the round by having a total more than the dealer or the dealer busts,
    *  Adds the double the bet to the player's balance and resets the bet to zero.
@@ -68,9 +68,9 @@ class Player {
   
  private:
   string name_; // the name of the player
-  size_t balance_; // the amount of money the player has
+  float balance_; // the amount of money the player has
   size_t bet_; // the amount that the player bet in the round
   Hand hand_; // the player's hand containing their cards
-  bool turn_done; // whether the player's turn is done for the round
+  bool turn_done_; // whether the player's turn is done for the round
 };
 } // namespace naivebayes

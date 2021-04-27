@@ -3,9 +3,9 @@
 namespace blackjack {
 
 // todo: remove magic numbers
-Player::Player() : name_("Player"), balance_(100), bet_(0), turn_done(false) {}
+Player::Player() : name_("Player"), balance_(100.0f), bet_(0), turn_done_(false) {}
 
-Player::Player(string name, size_t balance) : name_(name), balance_(balance), bet_(0), turn_done(false) {}
+Player::Player(string name, float balance) : name_(name), balance_(balance), bet_(0), turn_done_(false) {}
 
 size_t Player::GetBet() const {
   return bet_;
@@ -30,7 +30,7 @@ void Player::Push() {
 }
 
 void Player::Blackjack() {
-  balance_ += 2.5 * bet_;
+  balance_ += 2.5f * bet_;
   bet_ = 0;
 }
 
@@ -45,6 +45,10 @@ Hand& Player::GetHand() {
 }
 
 bool Player::IsTurnDone() const {
-  return turn_done;
+  return turn_done_;
+}
+
+void Player::SetTurnDone(bool turn_done) {
+  turn_done_ = turn_done;
 }
 } // namespace blackjack
