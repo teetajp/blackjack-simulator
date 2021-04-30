@@ -89,12 +89,14 @@ void DisplayPostRoundInfo(GameEngine& engine) {
   GameStatus status = engine.GetGameStatus();
 
   PrintHand("Dealer", *status.dealers_hand);
+  cout << "----------------------" << std::endl;
   
   for (auto player : status.players) {
     cout << "Player " << player->GetName() << std::endl;
     cout << "Balance: " << player->GetBalance() << std::endl;
     PrintHand(player->GetName(), player->GetHand());
-    cout << "Result: " << player->ResultToString();
+    cout << "Result: " << player->ResultToString() << std::endl;
+    cout << "----------------------" << std::endl;
   }
 }
 
@@ -116,5 +118,6 @@ void PrintHand(string name, const blackjack::Hand& hand){
   
   if (hand.HasBlackjack()) {
     cout << name << " has blackjack." << std::endl;
+    cout << "----------------------" << std::endl;
   }
 }
