@@ -17,7 +17,7 @@ namespace blackjack {
 /** Holds the information that the client needs to interact with the engine */
 struct GameStatus {
   vector<const Player*> players; // all the players and their information
-  vector<Card> dealers_cards; // the cards in the dealer's hand
+  const Hand* dealers_hand; // the cards in the dealer's hand
 };
 
 /**
@@ -69,7 +69,7 @@ class GameEngine {
    * 
    * @return true if the dealer has blackjack (implies round would be over), false otherwise.
    */
-  bool CheckBlackjack();
+  bool PayBlackjacks();
 
   /** Calls the players, in order, to take hit, stand, or double down */
   void PlayerPlays(istream &input); // todo: add parameter to input info?

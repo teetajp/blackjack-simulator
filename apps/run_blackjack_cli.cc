@@ -15,6 +15,8 @@ using std::cout;
 
 void AddPlayers(GameEngine& engine);
 void RequestBets(GameEngine& engine);
+void DisplayPostRoundInfo(GameEngine& engine);
+void PrintHand(string name, const blackjack::Hand& hand);
 
 /** Main method */
 int main() {
@@ -27,19 +29,22 @@ int main() {
     cin >> arg;
     if (arg == "n")
       break;
-    // Ask player for bets
+    
     RequestBets(engine);
-//    engine.ShuffleDeck();
-//    engine.DealCards();
-//    
-//    if (!engine.CheckBlackjack()) {
-//      // Enters this if statement when dealer doesn't have blackjack and action from players is needed
+    
+    engine.ShuffleDeck();
+    engine.DealCards();
+
+    if (engine.PayBlackjacks()) {
+      // Dealer has blackjack and the bets are settled. Now we just need to display the cards
+      cout << "Dealer has blackjack. Bets are settled accordingly.";
+    } else {
+      // Enters this if statement when dealer doesn't have blackjack and action from players is needed
 //      engine.PlayerPlays(cin);
 //      engine.DealerPlays();
 //      engine.SettleBets();
-//    } else {
-//      // display hands
-//    }
+    }
+    DisplayPostRoundInfo(engine);
 //    engine.ResetHands();
   }
   
@@ -65,15 +70,51 @@ void AddPlayers(GameEngine& engine) {
 }
 
 void RequestBets(GameEngine& engine) {
+  // todo: implement error handling
   GameStatus status = engine.GetGameStatus();
   map<string, float> bets;
   
-  cout << "Each player must place a bet.";
+  cout << "Each player must place a bet." << std::endl;
   for (auto player : status.players) {
-    cout << std::endl << "Player: " << player->GetName() << "'s Bet:";
+    cout << "Player " << player->GetName() << "'s Bet:";
     float bet = 0;
     cin >> bet;
     bets[player->GetName()] = bet;
   }
+  cout << std::endl;
   engine.PlaceBets(bets);
+}
+
+void DisplayPostRoundInfo(GameEngine& engine) {
+  GameStatus status = engine.GetGameStatus();
+
+  PrintHand("Dealer", *status.dealers_hand);
+  
+  for (auto player : status.players) {
+    cout << "Player " << player->GetName() << std::endl;
+    cout << "Balance: " << player->GetBalance() << std::endl;
+    PrintHand(player->GetName(), player->GetHand());
+    cout << "Result: " << player->ResultToString();
+  }
+}
+
+void PrintHand(string name, const blackjack::Hand& hand){
+  cout << name << "'s cards: ";
+  
+  // Print all the cards
+  for (auto card : hand.GetCards()) {
+    cout << card.ToString();
+    
+    if (card != hand.GetCards().back()) {
+       cout << ", ";
+    } else {
+      cout << std::endl;
+    }
+  }
+  
+  cout << "Hand Value: " << hand.CalculateHandValue() << std::endl;
+  
+  if (hand.HasBlackjack()) {
+    cout << name << " has blackjack." << std::endl;
+  }
 }

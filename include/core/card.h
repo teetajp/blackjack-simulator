@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
+using std::string;
 using std::vector;
 
 namespace blackjack {
@@ -34,6 +36,9 @@ class Card {
 
   /** Returns the card rank */
   Rank GetRank() const;
+  
+  /** Returns a string describing the card */
+  string ToString() const;
 
   /** Equal to operator overload - check if suit AND rank is the same */
   friend bool operator==(const Card &first, const Card &second);

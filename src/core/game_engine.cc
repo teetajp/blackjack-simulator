@@ -28,7 +28,7 @@ void GameEngine::StartRound(istream &input) {
 //  RequestBets(input);
 //  DealCards();
 //  
-//  if (!CheckBlackjack()) {
+//  if (!PayBlackjacks()) {
 //    // True if dealer doesn't have blackjack and the bets' aren't settled
 //    PlayerPlays(input);
 //    DealerPlays();
@@ -55,19 +55,16 @@ void GameEngine::PlaceBets(map<string, float>& bets) {
 void GameEngine::DealCards() {
   for (Player& player : players_) {
     // Determine whether a player is playing based on whether their bet is valid
-    if (player.GetBet() <= 0 || player.GetBet() > player.GetBalance()) {
-      player.SetTurnDone(true);
-    } else {
-      player.SetTurnDone(false);
-      player.GetHand().AddCard(deck_.DrawCard());
-      player.GetHand().AddCard(deck_.DrawCard());
+    if (player.GetResult() == Player::InProgress) {
+      player.Hit(deck_);
+      player.Hit(deck_);
     }
   }
   dealer_.GetHand().AddCard(deck_.DrawCard());
   dealer_.GetHand().AddCard(deck_.DrawCard());
 }
 
-bool GameEngine::CheckBlackjack() {
+bool GameEngine::PayBlackjacks() {
   if (dealer_.GetHand().HasBlackjack()) {
     // Any player who also has blackjack ties with the dealer, otherwise they lose the round
     for (Player& player : players_) {
@@ -76,7 +73,6 @@ bool GameEngine::CheckBlackjack() {
       } else {
         player.Lose(); // Dealer has blackjack but player doesn't, so take their bet
       }
-      player.SetTurnDone(true); // Round is over for everyone
     }
     return true;
   }
@@ -86,7 +82,6 @@ bool GameEngine::CheckBlackjack() {
     if (player.GetHand().HasBlackjack()) {
       // Pay the player off as they won and set their turn as done
       player.Blackjack();
-      player.SetTurnDone(true);
     }
   }
   // The players who do not have blackjack will continue and take action next
@@ -95,7 +90,7 @@ bool GameEngine::CheckBlackjack() {
 
 void GameEngine::PlayerPlays(istream &input) {
   for (Player& player : players_) {
-    if (player.IsTurnDone())
+    if (player.GetResult() == Player::InProgress)
       continue; // Only players who didn't hit blackjack yet can take action
     
     std::cout << "Cards in Hand:" << std::endl;
@@ -143,8 +138,7 @@ void GameEngine::SettleBets() {
 void GameEngine::ResetHands() {
   // Reset all player's hand
   for (Player& player : players_) {
-    player.GetHand().ResetHand();
-    player.SetTurnDone(false);
+    player.ResetHand();
   }
   dealer_.GetHand().ResetHand();
 }
@@ -156,7 +150,8 @@ GameStatus GameEngine::GetGameStatus() {
   }
   GameStatus status;
   status.players = players; // pointers are marked const, so contents can't be changed through this
-  status.dealers_cards = dealer_.GetHand().GetCards(); // the cards returned here are a copy
+//  status.dealers_cards = dealer_.GetHand().GetCards(); // the cards returned here are a copy
+  status.dealers_hand = &dealer_.GetHand();  
   return status;
 }
 

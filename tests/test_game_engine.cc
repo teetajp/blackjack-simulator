@@ -24,7 +24,7 @@ TEST_CASE("RequestBets") {
 
 //TEST_CASE("DealCards");
 //
-//TEST_CASE("CheckBlackjack");
+//TEST_CASE("PayBlackjacks");
 //
 //TEST_CASE("PlayerPlays");
 //

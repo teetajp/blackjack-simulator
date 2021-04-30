@@ -2,6 +2,7 @@
 
 #include "card.h"
 #include "hand.h"
+#include "deck.h"
 #include <string>
 
 using std::string;
@@ -14,6 +15,10 @@ namespace blackjack {
  */
 class Player {
  public:
+  enum Result { // state of the player after the round
+    Won, Tied, Lost, InProgress, NotPlaying
+  };
+  
   /** Default constructor */
   Player();
   
@@ -50,7 +55,16 @@ class Player {
    * @param bet the amount to bet in the round
    */
   void PlaceBet(float bet);
+  
+  /** Adds a card to the hand */
+  void Hit(Deck& deck);
 
+  /** Clears all the cards from the player's hand */
+  void ResetHand();
+  
+  /** Set the state of the player (won, lost, tied, in progress) */
+  void SetResult(Result result);
+  
   /** Gets the name of the player */
   string GetName() const;
 
@@ -61,19 +75,19 @@ class Player {
   float GetBet() const;
   
   /** Gets the player's hand */
-  Hand& GetHand();
+  const Hand& GetHand() const;
   
-  /** Returns whether the player's turn is done for the round*/
-  bool IsTurnDone() const;
-  
-  /** Set whether the player's turn is done */
-  void SetTurnDone(bool turn_done);
+  /** Returns the result of the round */
+  Result GetResult() const;
+
+  /** Returns the result in the form of a string */
+  string ResultToString() const;
   
  private:
   string name_; // the name of the player
   float balance_; // the amount of money the player has
   float bet_; // the amount that the player bet in the round
   Hand hand_; // the player's hand containing their cards
-  bool turn_done_; // whether the player's turn is done for the round
+  Result result_; // result of the round
 };
 } // namespace naivebayes
