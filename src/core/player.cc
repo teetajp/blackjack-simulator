@@ -3,17 +3,9 @@
 namespace blackjack {
 
 // todo: remove magic numbers
-Player::Player() : name_("Player"), balance_(100.0f), bet_(0), turn_done_(false) {}
+Player::Player() : name_("Player"), balance_(100.0f), bet_(0.0f), turn_done_(false) {}
 
 Player::Player(string name, float balance) : name_(name), balance_(balance), bet_(0), turn_done_(false) {}
-
-size_t Player::GetBet() const {
-  return bet_;
-}
-
-string Player::GetName() const {
-  return name_;
-}
 
 void Player::Win() {
   balance_ += 2 * bet_; // won the amount the player bet and return what the player bet
@@ -34,9 +26,21 @@ void Player::Blackjack() {
   bet_ = 0;
 }
 
-void Player::PostBet(size_t bet) {
+void Player::PlaceBet(float bet) {
   bet_ = bet;
   balance_ -= bet_;
+}
+
+float Player::GetBet() const {
+  return bet_;
+}
+
+string Player::GetName() const {
+  return name_;
+}
+
+float Player::GetBalance() const {
+  return balance_;
 }
 
 Hand& Player::GetHand() {

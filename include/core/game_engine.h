@@ -5,10 +5,20 @@
 #include <core/dealer.h>
 #include <core/player.h>
 #include <vector>
+#include <iostream>
+#include <map>
 
+using std::map;
+using std::istream;
 using std::vector;
 
 namespace blackjack {
+
+/** Holds the information that the client needs to interact with the engine */
+struct GameStatus {
+  vector<const Player*> players; // all the players and their information
+  vector<Card> dealers_cards; // the cards in the dealer's hand
+};
 
 /**
  * The Game Engine class runs the game, taking in input from the user and outputting the results
@@ -39,10 +49,16 @@ class GameEngine {
   const Player& GetPlayer(string name) const;
   
   /** Resets all the hands and bets and starts the round */
-  void StartRound();
+  void StartRound(istream &input);
+  
+  /** Shuffles the current deck */
+  void ShuffleDeck();
 
-  /** Prompts all players to post a bet*/
-  void RequestBets(); // todo: add parameter that takes inputstream?
+  /** Updates the players' bet
+   * 
+   * @param bets a mapping of player name to their bet
+   */
+  void PlaceBets(map<string, float>& bets);
 
   /** Deals cards to all the players in order then the dealer */
   void DealCards();
@@ -56,7 +72,7 @@ class GameEngine {
   bool CheckBlackjack();
 
   /** Calls the players, in order, to take hit, stand, or double down */
-  void PlayerPlays(); // todo: add parameter to input info?
+  void PlayerPlays(istream &input); // todo: add parameter to input info?
 
   /** Calls the dealer to hit or stand until they reach a hand total of 17 or more */
   void DealerPlays();
@@ -66,6 +82,9 @@ class GameEngine {
   
   /** Resets the dealer's and all the players' hand */
   void ResetHands();
+  
+  /** Gets the status of the game, including each player's information and dealer's hand */
+  GameStatus GetGameStatus();
   
  private:
   Deck deck_; // deck of cards in play

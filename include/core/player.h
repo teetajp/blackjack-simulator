@@ -49,13 +49,16 @@ class Player {
    * 
    * @param bet the amount to bet in the round
    */
-  void PostBet(size_t bet);
-
-  /** Gets the amount the player bet in the round */
-  size_t GetBet() const;
+  void PlaceBet(float bet);
 
   /** Gets the name of the player */
   string GetName() const;
+
+  /** Gets the amount of money the player has at the table */
+  float GetBalance() const;
+  
+  /** Gets the amount the player bet in the round */
+  float GetBet() const;
   
   /** Gets the player's hand */
   Hand& GetHand();
@@ -69,7 +72,7 @@ class Player {
  private:
   string name_; // the name of the player
   float balance_; // the amount of money the player has
-  size_t bet_; // the amount that the player bet in the round
+  float bet_; // the amount that the player bet in the round
   Hand hand_; // the player's hand containing their cards
   bool turn_done_; // whether the player's turn is done for the round
 };

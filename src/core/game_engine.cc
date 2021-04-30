@@ -1,5 +1,6 @@
 #include <core/game_engine.h>
 
+
 namespace blackjack {
 
 GameEngine::GameEngine()= default;
@@ -22,29 +23,45 @@ const Player& GameEngine::GetPlayer(string name) const {
   throw std::invalid_argument("Player does not exist");
 }
 
-void GameEngine::StartRound() {
-  deck_.Shuffle();
-  RequestBets();
-  DealCards();
-  
-  if (!CheckBlackjack()) {
-    // True if dealer doesn't have blackjack and the bets' aren't settled
-    PlayerPlays();
-    DealerPlays();
-    SettleBets();
-  }
-  ResetHands();
+void GameEngine::StartRound(istream &input) {
+//  deck_.Shuffle();
+//  RequestBets(input);
+//  DealCards();
+//  
+//  if (!CheckBlackjack()) {
+//    // True if dealer doesn't have blackjack and the bets' aren't settled
+//    PlayerPlays(input);
+//    DealerPlays();
+//    SettleBets();
+//  }
+//  ResetHands();
 }
 
-void GameEngine::RequestBets() {
-  // todo: find a way to implement
+void GameEngine::ShuffleDeck() {
+  deck_.Shuffle();
+}
+
+void GameEngine::PlaceBets(map<string, float>& bets) {
+  for (auto player_bet : bets) {
+    // Find a player with the matching name and update the bet
+    for (Player& player : players_) {
+      if (player_bet.first == player.GetName()) {
+        player.PlaceBet(player_bet.second);
+      }
+    }
+  }
 }
 
 void GameEngine::DealCards() {
   for (Player& player : players_) {
-    player.GetHand().AddCard(deck_.DrawCard());
-    player.GetHand().AddCard(deck_.DrawCard());
-
+    // Determine whether a player is playing based on whether their bet is valid
+    if (player.GetBet() <= 0 || player.GetBet() > player.GetBalance()) {
+      player.SetTurnDone(true);
+    } else {
+      player.SetTurnDone(false);
+      player.GetHand().AddCard(deck_.DrawCard());
+      player.GetHand().AddCard(deck_.DrawCard());
+    }
   }
   dealer_.GetHand().AddCard(deck_.DrawCard());
   dealer_.GetHand().AddCard(deck_.DrawCard());
@@ -76,7 +93,18 @@ bool GameEngine::CheckBlackjack() {
   return false;
 }
 
-void GameEngine::PlayerPlays() {
+void GameEngine::PlayerPlays(istream &input) {
+  for (Player& player : players_) {
+    if (player.IsTurnDone())
+      continue; // Only players who didn't hit blackjack yet can take action
+    
+    std::cout << "Cards in Hand:" << std::endl;
+    for (auto card : player.GetHand().GetCards()) {
+      std::cout << card.GetRank() << " of " << card.GetRank() << std::endl;
+    }
+    
+    std::cout << "";
+  }
   // todo: implement
 }
 
@@ -119,6 +147,17 @@ void GameEngine::ResetHands() {
     player.SetTurnDone(false);
   }
   dealer_.GetHand().ResetHand();
+}
+
+GameStatus GameEngine::GetGameStatus() {
+  vector<const Player*> players;
+  for (const Player& player : players_) {
+    players.push_back(&player);
+  }
+  GameStatus status;
+  status.players = players; // pointers are marked const, so contents can't be changed through this
+  status.dealers_cards = dealer_.GetHand().GetCards(); // the cards returned here are a copy
+  return status;
 }
 
 
