@@ -63,9 +63,8 @@ int main() {
         engine.PlayerPlays(command);
         status = engine.GetGameStatus();
       }
-      
-//      engine.DealerPlays();
-      engine.SettleBets();
+      engine.DealerPlays();
+      engine.SettleBets(); // Pay/take away bets for people who didn't bust and need to compare hand value to dealer
     }
     DisplayPostRoundInfo(engine);
     engine.ResetHands();
@@ -111,8 +110,6 @@ void RequestBets(GameEngine& engine) {
 void DisplayPostRoundInfo(GameEngine& engine) {
   GameStatus status = engine.GetGameStatus();
   cout << "----------------------" << std::endl;
-  PrintHand("Dealer", *status.dealers_hand);
-  cout << "----------------------" << std::endl;
   
   for (auto player : status.players) {
     cout << "Player " << player->GetName() << std::endl;
@@ -121,6 +118,8 @@ void DisplayPostRoundInfo(GameEngine& engine) {
     cout << "Result: " << player->ResultToString() << std::endl;
     cout << "----------------------" << std::endl;
   }
+  PrintHand("Dealer", *status.dealers_hand);
+  cout << "----------------------" << std::endl;
 }
 
 void PrintHand(string name, const blackjack::Hand& hand){
@@ -137,7 +136,12 @@ void PrintHand(string name, const blackjack::Hand& hand){
     }
   }
   
-  cout << "Hand Value: " << hand.CalculateHandValue() << std::endl;
+  cout << "Hand Value: " << hand.CalculateHandValue();
+  
+  if (hand.IsBust()) {
+    cout << " (Bust)";
+  }
+  cout << std::endl;
   
   if (hand.HasBlackjack()) {
     cout << name << " has blackjack." << std::endl;
