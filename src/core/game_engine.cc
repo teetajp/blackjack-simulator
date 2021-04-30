@@ -1,6 +1,5 @@
 #include <core/game_engine.h>
 
-
 namespace blackjack {
 
 GameEngine::GameEngine()= default;
@@ -88,30 +87,27 @@ bool GameEngine::PayBlackjacks() {
   return false;
 }
 
-void GameEngine::PlayerPlays(vector<PlayerCommand> player_commands) {
-  for (auto player_command : player_commands) {
-    // Find the matching player
-    for (Player& player : players_) {
-      if (player_command.name == player.GetName()) {
-        // Make sure player can take actions
-        if (player.GetResult() == Player::InProgress) {
-          
-          switch (player_command.command) {
-            case PlayerCommand::Hit:
-              player.Hit(deck_); // Hand still in progress unless bust
-              if (player.GetHand().IsBust())
-                player.Lose(); // Update result and take away bet immediately
-              break;
-            case PlayerCommand::Stand:
-              player.SetResult(Player::AwaitingComparison);
-              break;
-            case PlayerCommand::DoubleDown:
-              player.DoubleDown(deck_); // Double bet and draw a final card
-              if (player.GetHand().IsBust())
-                player.Lose();
-          }
-        }
+void GameEngine::PlayerPlays(string command) {
+  // Turn command to all lowercase
+  std::transform(command.begin(), command.end(), command.begin(),
+                 [](unsigned char c){ return tolower(c); });
+  
+  // Make sure player can take actions
+  if (current_player->GetResult() == Player::InProgress) {
+    
+    if (command == "hit") {
+      current_player->Hit(deck_); // Hand still in progress unless bust
+      
+      if (current_player->GetHand().IsBust()) {
+        current_player->Lose(); // Update result and take away bet immediately
       }
+    } else if (command == "stand") {
+      current_player->SetResult(Player::AwaitingComparison);
+    } else if (command == "double") {
+      current_player->DoubleDown(deck_); // Double bet and draw a final card
+      
+      if (current_player->GetHand().IsBust())
+        current_player->Lose();
     }
   }
 }
@@ -158,16 +154,22 @@ void GameEngine::ResetHands() {
 }
 
 GameStatus GameEngine::GetGameStatus() {
+  // Update all players' available actions and add their const version to the game status
   vector<const Player*> players;
-  for (const Player& player : players_) {
+  current_player = nullptr;
+  
+  for (Player& player : players_) {
+    player.UpdateActions();
     players.push_back(&player);
+    
+    if (current_player == nullptr && !player.GetActions().empty())
+      current_player = &player;
   }
+  
   GameStatus status;
   status.players = players; // pointers are marked const, so contents can't be changed through this
-//  status.dealers_cards = dealer_.GetHand().GetCards(); // the cards returned here are a copy
-  status.dealers_hand = &dealer_.GetHand();  
+  status.dealers_hand = &dealer_.GetHand();  // the cards returned here are a copy
+  status.player_to_act = current_player;
   return status;
 }
-
-
 } // namespace blackjack

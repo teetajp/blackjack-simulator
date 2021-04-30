@@ -24,7 +24,7 @@ int main() {
   AddPlayers(engine); // Players can only be added at the start of the round
   while (true) {
     // Ask user(s) whether to continue the game
-    cout << "Press any button to continue. n to exit." << std::endl;
+    cout << "Press any button to continue. Type n to exit." << std::endl;
     string arg;
     cin >> arg;
     if (arg == "n")
@@ -40,12 +40,35 @@ int main() {
       cout << "Dealer has blackjack. Bets are settled accordingly.";
     } else {
       // Enters this if statement when dealer doesn't have blackjack and action from players is needed
-//      engine.PlayerPlays(cin);
+      GameStatus status = engine.GetGameStatus();
+      
+      while (status.player_to_act != nullptr) {
+        cout << "----------------------" << std::endl;
+        cout << "Player " << status.player_to_act->GetName() << "'s Turn to Act" << std::endl;
+        PrintHand(status.player_to_act->GetName(), status.player_to_act->GetHand());
+        
+        cout << "Available Actions: ";
+        vector<string> actions = status.player_to_act->GetActions();
+        for (auto action : actions) {
+          cout << action;
+          if (action != actions.back()) {
+            cout << ", ";
+          } else {
+            cout << std::endl;
+          }
+        }
+        cout << "Enter command: ";
+        string command = "";
+        cin >> command;
+        engine.PlayerPlays(command);
+        status = engine.GetGameStatus();
+      }
+      
 //      engine.DealerPlays();
-//      engine.SettleBets();
+      engine.SettleBets();
     }
     DisplayPostRoundInfo(engine);
-//    engine.ResetHands();
+    engine.ResetHands();
   }
   
   
@@ -87,13 +110,13 @@ void RequestBets(GameEngine& engine) {
 
 void DisplayPostRoundInfo(GameEngine& engine) {
   GameStatus status = engine.GetGameStatus();
-
+  cout << "----------------------" << std::endl;
   PrintHand("Dealer", *status.dealers_hand);
   cout << "----------------------" << std::endl;
   
   for (auto player : status.players) {
     cout << "Player " << player->GetName() << std::endl;
-    cout << "Balance: " << player->GetBalance() << std::endl;
+    cout << "Balance: $" << player->GetBalance() << std::endl;
     PrintHand(player->GetName(), player->GetHand());
     cout << "Result: " << player->ResultToString() << std::endl;
     cout << "----------------------" << std::endl;

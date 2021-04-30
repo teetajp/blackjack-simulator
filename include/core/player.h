@@ -9,12 +9,18 @@ using std::string;
 
 namespace blackjack {
 
+/** All the actions a player can take during a round */
+static const vector<string> kAllActions = {
+  "hit", "stand", "double"
+};
+
 /**
  * Represents the player in a game of blackjack.
  * Holds information about the player's name, cards, balance, and bet.
  */
 class Player {
  public:
+  
   enum Result { // state of the player after the round
     Won, Tied, Lost, AwaitingComparison, InProgress, NotPlaying
   };
@@ -68,6 +74,9 @@ class Player {
   /** Set the state of the player (won, lost, tied, in progress) */
   void SetResult(Result result);
   
+  /** Updates the actions a player can take */
+  void UpdateActions();
+  
   /** Gets the name of the player */
   string GetName() const;
 
@@ -82,6 +91,9 @@ class Player {
   
   /** Returns the result of the round */
   Result GetResult() const;
+  
+  /** Returns the actions a player can take currently */
+  vector<string> GetActions() const;
 
   /** Returns the result in the form of a string */
   string ResultToString() const;
@@ -92,5 +104,6 @@ class Player {
   float bet_; // the amount that the player bet in the round
   Hand hand_; // the player's hand containing their cards
   Result result_; // result of the round
+  vector<string> available_actions_; // actions the player can take currently
 };
 } // namespace naivebayes

@@ -40,6 +40,7 @@ void Player::PlaceBet(float bet) {
     balance_ -= bet_;
     result_ = InProgress;
   }
+  UpdateActions();
 }
 
 void Player::DoubleDown(Deck& deck) {
@@ -62,6 +63,16 @@ void Player::SetResult(Result result) {
   result_ = result;
 }
 
+void Player::UpdateActions() {
+  switch (result_) {
+    case InProgress:
+      available_actions_ = kAllActions;
+      break;
+    default:
+      available_actions_.clear();
+  }
+}
+
 float Player::GetBet() const {
   return bet_;
 }
@@ -81,6 +92,10 @@ const Hand& Player::GetHand() const{
 
 Player::Result Player::GetResult() const {
   return result_;
+}
+
+vector<string> Player::GetActions() const {
+  return available_actions_;
 }
 
 string Player::ResultToString() const {

@@ -14,13 +14,13 @@ TEST_CASE("Constructor") {
 //TEST_CASE("StartRound");
 //
 // todo: need to implement from GUI
-TEST_CASE("RequestBets") {
-  GameEngine engine;
-  engine.AddPlayer("TJ", 100);
-  stringstream ss("10");
-  engine.RequestBets(ss);
-  REQUIRE(engine.GetPlayer("TJ").GetBet() == 10);
-}
+//TEST_CASE("RequestBets") {
+//  GameEngine engine;
+//  engine.AddPlayer("TJ", 100);
+//  stringstream ss("10");
+//  engine.RequestBets(ss);
+//  REQUIRE(engine.GetPlayer("TJ").GetBet() == 10);
+//}
 
 //TEST_CASE("DealCards");
 //

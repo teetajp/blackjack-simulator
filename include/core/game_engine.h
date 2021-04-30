@@ -18,16 +18,9 @@ namespace blackjack {
 struct GameStatus {
   vector<const Player*> players; // all the players and their information
   const Hand* dealers_hand; // the cards in the dealer's hand
+  const Player* player_to_act; // the player whose turn it is to act
 };
 
-/** Holds the information needed that the client can output so the engine can take action */
-struct PlayerCommand {
-  enum Command {
-    Hit, Stand, DoubleDown
-  };
-  string name;
-  Command command;
-};
 
 /**
  * The Game Engine class runs the game, taking in input from the user and outputting the results
@@ -80,8 +73,8 @@ class GameEngine {
    */
   bool PayBlackjacks();
 
-  /** Calls the players, in order, to take hit, stand, or double down */
-  void PlayerPlays(vector<PlayerCommand> player_commands);
+  /** Calls the players, in order, to take hit, stand, or double down */ // todo: edit doc
+  void PlayerPlays(string command);
 
   /** Calls the dealer to hit or stand until they reach a hand total of 17 or more */
   void DealerPlays();
@@ -99,5 +92,6 @@ class GameEngine {
   Deck deck_; // deck of cards in play
   Dealer dealer_; // the person assigned as dealer
   vector<Player> players_; // the players who are playing in the round
+  Player* current_player; // player whose turn it is
 };
 } // namespace blackjack

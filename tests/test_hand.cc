@@ -33,12 +33,14 @@ TEST_CASE("CalculateHandValue") {
   SECTION("One card") {
     hand.AddCard(Card(Card::Hearts, Card::Seven));
     REQUIRE(hand.CalculateHandValue() == 7);
-  }SECTION("Multiple cards") {
+  }
+  SECTION("Multiple cards") {
     hand.AddCard(Card(Card::Hearts, Card::Seven));
     hand.AddCard(Card(Card::Clubs, Card::Two));
     hand.AddCard(Card(Card::Diamonds, Card::King));
     REQUIRE(hand.CalculateHandValue() == 19);
-  }SECTION("Soft Ace (1 Ace + any non-Ace card)") {
+  }
+  SECTION("Soft Ace (1 Ace + any non-Ace card)") {
     SECTION("Ace + 10-valued card (Blackjack)") {
       hand.AddCard(Card(Card::Spades, Card::Ace));
       hand.AddCard(Card(Card::Clubs, Card::Jack));
@@ -48,11 +50,19 @@ TEST_CASE("CalculateHandValue") {
       hand.AddCard(Card(Card::Clubs, Card::Six));
       REQUIRE(hand.CalculateHandValue() == 17);
     }
-  }SECTION("Hard Ace (Ace counted as 1 since counting it as 11 would make hand go bust)") {
+  }
+  SECTION("Hard Ace (Ace counted as 1 since counting it as 11 would make hand go bust)") {
     hand.AddCard(Card(Card::Spades, Card::Ace));
     hand.AddCard(Card(Card::Clubs, Card::Nine));
     hand.AddCard(Card(Card::Clubs, Card::Two));
     REQUIRE(hand.CalculateHandValue() == 12);
+  }
+  SECTION("Hard Ace + Card that would make hand go bust") {
+    hand.AddCard(Card(Card::Spades, Card::Seven));
+    hand.AddCard(Card(Card::Clubs, Card::Eight)); // 7 + 8 = 15
+    hand.AddCard(Card(Card::Clubs, Card::Ace)); // 7 + 8 + 1 = 16
+    hand.AddCard(Card(Card::Hearts, Card::Eight)); // 7 + 8 + 1 + 8 = 24
+    REQUIRE(hand.CalculateHandValue() == 24);
   }
 }
 

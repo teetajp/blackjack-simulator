@@ -32,14 +32,18 @@ bool Hand::HasBlackjack() const {
 
 size_t Hand::CalculateHandValue() const {
   size_t total_value = 0;
-  bool soft_ace = true;
+  bool soft_ace = has_ace_;
 
   for (const Card &card : cards_) {
     size_t card_value = card.GetRank();
 
-    if (card_value == Card::Ace && total_value + kMaxAceValue <= kMaxHandValue) {
-      soft_ace = true;
-      card_value = kMaxAceValue; // Ace counted as 11 if it doesn't make the hand go bust
+    if (card_value == Card::Ace) {
+      if (total_value + kMaxAceValue <= kMaxHandValue) {
+        soft_ace = true;
+        card_value = kMaxAceValue; // Ace counted as 11 if it doesn't make the hand go bust
+      } else {
+        soft_ace = false;
+      }
     } else if (total_value + card_value > 21 && soft_ace) {
       // Change the value of the Ace to 1 instead of 11
       total_value -= kMaxAceValue;
