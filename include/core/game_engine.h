@@ -14,10 +14,19 @@ using std::vector;
 
 namespace blackjack {
 
-/** Holds the information that the client needs to interact with the engine */
+/** Holds the information that the client needs to know to interact with the engine */
 struct GameStatus {
   vector<const Player*> players; // all the players and their information
   const Hand* dealers_hand; // the cards in the dealer's hand
+};
+
+/** Holds the information needed that the client can output so the engine can take action */
+struct PlayerCommand {
+  enum Command {
+    Hit, Stand, DoubleDown
+  };
+  string name;
+  Command command;
 };
 
 /**
@@ -72,7 +81,7 @@ class GameEngine {
   bool PayBlackjacks();
 
   /** Calls the players, in order, to take hit, stand, or double down */
-  void PlayerPlays(istream &input); // todo: add parameter to input info?
+  void PlayerPlays(vector<PlayerCommand> player_commands);
 
   /** Calls the dealer to hit or stand until they reach a hand total of 17 or more */
   void DealerPlays();

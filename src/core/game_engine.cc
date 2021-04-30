@@ -88,19 +88,32 @@ bool GameEngine::PayBlackjacks() {
   return false;
 }
 
-void GameEngine::PlayerPlays(istream &input) {
-  for (Player& player : players_) {
-    if (player.GetResult() == Player::InProgress)
-      continue; // Only players who didn't hit blackjack yet can take action
-    
-    std::cout << "Cards in Hand:" << std::endl;
-    for (auto card : player.GetHand().GetCards()) {
-      std::cout << card.GetRank() << " of " << card.GetRank() << std::endl;
+void GameEngine::PlayerPlays(vector<PlayerCommand> player_commands) {
+  for (auto player_command : player_commands) {
+    // Find the matching player
+    for (Player& player : players_) {
+      if (player_command.name == player.GetName()) {
+        // Make sure player can take actions
+        if (player.GetResult() == Player::InProgress) {
+          
+          switch (player_command.command) {
+            case PlayerCommand::Hit:
+              player.Hit(deck_); // Hand still in progress unless bust
+              if (player.GetHand().IsBust())
+                player.Lose(); // Update result and take away bet immediately
+              break;
+            case PlayerCommand::Stand:
+              player.SetResult(Player::AwaitingComparison);
+              break;
+            case PlayerCommand::DoubleDown:
+              player.DoubleDown(deck_); // Double bet and draw a final card
+              if (player.GetHand().IsBust())
+                player.Lose();
+          }
+        }
+      }
     }
-    
-    std::cout << "";
   }
-  // todo: implement
 }
 
 void GameEngine::DealerPlays() {
@@ -114,15 +127,16 @@ void GameEngine::SettleBets() {
     
     for (Player& player : players_) {
       // Look for players who do not have blackjack and aren't bust as their bets aren't settled yet
-      if (!player.GetHand().HasBlackjack() && player.GetHand().CalculateHandValue() <= 21)
+      if (!player.GetHand().HasBlackjack() && player.GetHand().CalculateHandValue() <= Hand::kMaxHandValue)
         player.Win(); // Pay them off
     }
   } else { // Compare the dealer's total to each player who doesn't have a blackjack and settle bets accordingly
     for (Player& player : players_) {
       size_t player_total = player.GetHand().CalculateHandValue();
       
-      // Players w/ blackjack already have their bets settled
-      if (!player.GetHand().HasBlackjack()) {
+      // Players with "AwaitingComparison" status still need to compare totals to the dealer and settle bets accordingly
+      // The rest of the players without this status has had their bets sorted already
+      if (player.GetResult() == Player::AwaitingComparison) {
         if (player_total > dealer_total) {
           player.Win();
         } else if (player_total == dealer_total) {

@@ -35,6 +35,9 @@ class Hand {
 
   /** Returns true if the hand has an ace */
   bool HasAce() const;
+  
+  /** Returns true if the hand total is over 21 */
+  bool IsBust() const;
 
  private:
   vector<Card> cards_; // the cards in the hand

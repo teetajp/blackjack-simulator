@@ -16,7 +16,7 @@ namespace blackjack {
 class Player {
  public:
   enum Result { // state of the player after the round
-    Won, Tied, Lost, InProgress, NotPlaying
+    Won, Tied, Lost, AwaitingComparison, InProgress, NotPlaying
   };
   
   /** Default constructor */
@@ -55,6 +55,9 @@ class Player {
    * @param bet the amount to bet in the round
    */
   void PlaceBet(float bet);
+  
+  /** Doubles the bet of a player and draws a final card */
+  void DoubleDown(Deck& deck);
   
   /** Adds a card to the hand */
   void Hit(Deck& deck);

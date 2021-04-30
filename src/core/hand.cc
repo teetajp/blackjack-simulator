@@ -54,4 +54,8 @@ size_t Hand::CalculateHandValue() const {
 bool Hand::HasAce() const {
   return has_ace_;
 }
+
+bool Hand::IsBust() const {
+  return CalculateHandValue() > kMaxHandValue;
+}
 } // namespace blackjack

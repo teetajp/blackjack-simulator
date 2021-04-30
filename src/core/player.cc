@@ -42,6 +42,13 @@ void Player::PlaceBet(float bet) {
   }
 }
 
+void Player::DoubleDown(Deck& deck) {
+  balance_ -= bet_; // A bet should have already been made, so we just take out one more bet amount
+  bet_ *= 2;
+  Hit(deck);
+  result_ = AwaitingComparison;
+}
+
 void Player::Hit(Deck &deck) {
   hand_.AddCard(deck.DrawCard());
 }
