@@ -150,4 +150,8 @@ GameStatus GameEngine::GetGameStatus() {
   status.player_to_act = current_player;
   return status;
 }
+
+void GameEngine::LoadTextures() {
+//  spritesheet_ = 
+}
 } // namespace blackjack

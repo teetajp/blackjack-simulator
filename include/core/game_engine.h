@@ -8,6 +8,10 @@
 #include <iostream>
 #include <map>
 
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
 using std::map;
 using std::istream;
 using std::vector;
@@ -34,6 +38,7 @@ struct GameStatus {
  */
 class GameEngine {
  public:
+  /** Default Constructor */
   GameEngine();
 
   /** Adds a player to the game
@@ -77,6 +82,8 @@ class GameEngine {
   
   /** Gets the status of the game, including each player's information and dealer's hand */
   GameStatus GetGameStatus();
+  
+  void LoadTextures();
   
  private:
   Deck deck_; // deck of cards in play

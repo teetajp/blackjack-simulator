@@ -1,9 +1,6 @@
 #pragma once
 
 #include "core/game_engine.h"
-#include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 
 using glm::vec2;
 
@@ -12,8 +9,8 @@ namespace blackjack {
 /** Runs a game of blackjack with a GUI
  * 
  *  Game flow:
- *  1. Draw the table
- *  2. Start with one player w/ default buy-in of $100
+ *  1. (X) Draw the table
+ *  2. (X) Start with one player w/ default buy-in of $100
  *  3. Player places bet between $0 and balance by pressing up/down key
  *  4. Press enter once betting is done to start the round
  *  5. Shuffle cards (play card shuffling sound effect)
@@ -24,7 +21,7 @@ namespace blackjack {
  *  8. Each player takes action until out of moves or bust
  *  9. If some players not bust or blackjack, dealer shows card and dealer plays. If not bust, continue.
  *  10. Compare card value for player and dealer, pay players off accordingly.
- *     - Show an game result merssage.
+ *     - Show an game result message.
  */
  class BlackjackApp : public ci::app::App {
   public:
@@ -34,23 +31,22 @@ namespace blackjack {
    /** Called before the start of every round */
    void draw() override;
    
-   void update() override;
+//   void update() override;
 
+   /** Before each round, allow user to add/remove player and adjust bets */
    void keyDown(ci::app::KeyEvent event) override;
    
-   
   private:
-   static constexpr  double kWindowSize = 875; // default window size in pixels
-   static constexpr double kMargin = 100; // margin from the window
+   static constexpr double kAspectRatio = (double) 4/3; // the ratio of horizontal pixel to vertical pixels 
+   static constexpr double kWindowSize = 900; // default window size in pixels
+   static constexpr double kMargin = 50; // margin from the window
    static const size_t kInstructionsFontSize = 30; // font size for the text telling playings what keys do what
    static const size_t kMaxPlayers = 3; // the maximum number of players/hand in this table (for this app)
    const ci::Color kBackgroundColor = ci::Color("green"); // casino green for the blackjack table
    
-   
-   GameEngine engine;
-   bool round_started = false;
-   
-   
-   
+   GameEngine engine_; // the blackjack game engine
+   bool round_started_ = false; // whether the round has started  
+   ci::gl::Texture2dRef spritesheet_; // reference to the spritesheet
+   vector<vector<ci::gl::Texture2dRef>> card_sprites_; // 2d vector containing card sprites - [suit][rank]
  };
 }

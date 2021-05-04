@@ -6,7 +6,7 @@ namespace blackjack {
 
 static const char * ResultStrings[] = { "Won", "Tied", "Lost", "In Progress", "Not in this Round" };
 
-Player::Player() : name_("Player"), balance_(100.0f), bet_(0.0f), result_(NotPlaying) {}
+Player::Player() : name_("Player " + std::to_string(rand())), balance_(100.0f), bet_(0.0f), result_(NotPlaying) {}
 
 Player::Player(string name, float balance) : name_(std::move(name)), balance_(balance), bet_(0), result_(NotPlaying) {}
 
