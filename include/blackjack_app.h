@@ -46,12 +46,15 @@ namespace blackjack {
    static const size_t kInstructionsFontSize = 30; // font size for the text telling playings what keys do what
    static const size_t kMaxPlayers = 3; // the maximum number of players/hand in this table (for this app)
    const ci::Color kBackgroundColor = ci::Color("green"); // casino green for the blackjack table
-   const vector<float> kBetSizes = {1.f, 5.f, 10.f, 20.f, 50.f, 100.f};
+   const vector<float> kBetSizes = {0.f, 1.f, 5.f, 10.f, 20.f, 50.f, 100.f};
    const string kDefaultPlayerName = "Player";
-   GameEngine engine_; // the blackjack game engine
-   bool round_started_ = false; // whether the round has started  
+
    ci::gl::Texture2dRef card_back_; // sprite of the card back
-   map<string, float> bets; // the bets of each player for the round
+   GameEngine engine_; // the blackjack game engine
+   map<string, float> bets_; // the bets of each player for the round
+   bool round_started_ = false; // whether the round has started  
+   GameStatus status_; // players' information in the game
+   bool bet_confirmed = false; // whether a player has confirmed their bet (turn into vector for 2+ players)
    
    
   /** Displays the balance and bet for each player */

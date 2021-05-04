@@ -41,6 +41,7 @@ BlackjackApp::BlackjackApp() {
   engine_.AddPlayer(kDefaultPlayerName, 100.f); // Single player for now
   auto texture = ci::loadImage(R"(D:\Projects\Cinder\my-projects\final-project-teetajp\data\sprites\card_back_01.png)");
   card_back_ = ci::gl::Texture2d::create(texture);
+  bets_[kDefaultPlayerName] = 0;
 }
 
 // todo: turn magic numbers into constants
@@ -51,13 +52,13 @@ void BlackjackApp::draw() {
   
   // Draw the house rules texts
   ci::gl::drawStringCentered("BLACKJACK PAYS 3 TO 2",
-                             vec2(getWindowCenter().x, (float) card_back_->getHeight() + 2 * kMargin - kInstructionsFontSize), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+                             vec2(getWindowCenter().x, (float) card_back_->getHeight() + 3 * kMargin - kInstructionsFontSize), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
   ci::gl::drawStringCentered("DEALER MUST STAND ON 17 AND DRAW TO 16",
-                             vec2(getWindowCenter().x, (float) card_back_->getHeight() + 2 * kMargin), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+                             vec2(getWindowCenter().x, (float) card_back_->getHeight() + 3 * kMargin), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
   // todo: make a curve for the text
   
   // Draw instruction texts
-  ci::gl::drawStringCentered("Before Round: [Up Arrow] - Increment bet, [Down Arrow] - Decrement bet",
+  ci::gl::drawStringCentered("Before Round: [Up Arrow] - Increment bet, [Down Arrow] - Decrement bet, [Enter] - Confirm Bet/Start Round",
       vec2(getWindowCenter().x, getWindowHeight() - kMargin - kInstructionsFontSize), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
   ci::gl::drawStringCentered("During Round: [H] - Hit. [S] - Stand. [D] - Double Down.",
                              vec2(getWindowCenter().x, getWindowHeight() - kMargin), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
@@ -102,18 +103,39 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
       /* The five keys below are only valid commands before each round begins */
       case ci::app::KeyEvent::KEY_RETURN:
         // Start the round once players and bets are in
-        engine_.ShuffleDeck();
-        // todo: play sound
-        engine_.DealCards();
-        // todo: display cards
-        round_started_ = true;
+        if (bet_confirmed && !round_started_) {
+          engine_.ShuffleDeck();
+          // todo: play sound
+          engine_.DealCards();
+          // todo: display cards
+          round_started_ = true;
+          // todo: call draw() and implement control flow for when the game starts 
+        } else if (!bet_confirmed && !round_started_) {
+          engine_.PlaceBets(bets_);
+          bet_confirmed = true;
+          // todo: if 2+ players, change indicator onto other players to confirm their bets
+        }
         return;
       case ci::app::KeyEvent::KEY_UP:
         // Increments bet amount by $5, maximum is the player's balance
-        
+        for (auto size : kBetSizes) {
+          // Set the player's bet size to the first larger bet size
+          if (bets_[kDefaultPlayerName] < size && size <= status_.players.front()->GetBalance()) {
+            bets_[kDefaultPlayerName] = size;
+            draw();
+            return;
+          }
+        }
         return;
       case ci::app::KeyEvent::KEY_DOWN:
         // Decrements bet amount by $5, minimum is $1
+        for (auto it = kBetSizes.rbegin(); it != kBetSizes.rend(); ++it) { // Iterate from back to front (largest to smallest)
+          if (bets_[kDefaultPlayerName] > *it) { // Set the player's bet size to the first smaller bet size
+            bets_[kDefaultPlayerName] = *it;
+            draw();
+            return;
+          }
+        }
         return;
       case ci::app::KeyEvent::KEY_PLUS:
         // (Implement after single-player func. is done/ NOT part of project requirement)
@@ -143,24 +165,29 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
 void BlackjackApp::DisplayPlayerInfo(size_t game_area_height) {
   // todo: extend to multiple players and put coordinates for display as member variable in player class
   
-  float bet = 0; // Default bet is 0, let player increment
-  bets[kDefaultPlayerName] = bet;
-  GameStatus status = engine_.GetGameStatus();
+  status_ = engine_.GetGameStatus();
   
   // Display the player balance
-  float balance = status.players.front()->GetBalance();
+  float balance = status_.players.front()->GetBalance();
+  balance -= bets_[kDefaultPlayerName]; // Bet has not been placed, so show theoretical balance change
 
-  // Convert balance to a two-decimal point string
+  // Convert balance and bet to a two-decimal point string
   // Snippet from: https://stackoverflow.com/questions/29200635/convert-float-to-string-with-precision-number-of-decimal-digits-specified
   std::stringstream stream;
   stream << std::fixed << std::setprecision(2) << balance;
-  std::string balance_s = stream.str();
+  string balance_s = stream.str();
   
-  ci::gl::drawStringCentered("Balance: " + balance_s,
-                             vec2(getWindowCenter().x, game_area_height + kInstructionsFontSize), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+  stream.str(string()); // Reset the stream
+  stream << std::fixed << std::setprecision(2) << bets_[kDefaultPlayerName];
+  string bet_s = stream.str();
+  
+  // todo: assign each player an x-coordinate so everything is left-justified
+  ci::gl::drawString("Balance: $" + balance_s,
+                             vec2(getWindowCenter().x - 2 * kMargin, game_area_height - kMargin), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
   
   // Display the default or last bet
-  
+  ci::gl::drawString("Bet:        $" + bet_s,
+                             vec2(getWindowCenter().x - 2 * kMargin, game_area_height - kMargin - kInstructionsFontSize), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
     
   
   }
