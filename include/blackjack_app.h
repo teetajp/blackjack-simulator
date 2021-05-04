@@ -17,8 +17,8 @@ namespace blackjack {
  *  1. (X) Draw the table
  *  2. (X) Start with one player w/ default buy-in of $100
  *  3. (X-) Player places bet between $0 and balance by pressing up/down key
- *  4. Press enter once betting is done to start the round
- *  5. Shuffle cards (play card shuffling sound effect)
+ *  4. (X) Press enter once betting is done to start the round
+ *  5. (X) Shuffle cards (play card shuffling sound effect)
  *  6. Deal cards, (deal animation preferred but hard to make, so save that once game is done)
  *     - Display players' cards then dealer's cards with one face up, one face down
  *  7. Dealer checks for blackjack if ace/ten card, then settle bets if he has it (go to end). If not, continue
@@ -67,6 +67,9 @@ namespace blackjack {
   /** Displays the balance and bet for each player */
   void DisplayPlayerInfo(size_t game_area_height);
   
+  void DisplayCards();
   
+  /** Displays the dealer's cards */
+  void DisplayDealerCards();
  };
 }

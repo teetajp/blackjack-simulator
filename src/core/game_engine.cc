@@ -1,4 +1,6 @@
 #include <core/game_engine.h>
+#include <cinder/gl/Texture.h>
+#include <cinder/app/AppBase.h>
 
 namespace blackjack {
 
@@ -152,6 +154,37 @@ GameStatus GameEngine::GetGameStatus() {
 }
 
 void GameEngine::LoadTextures() {
-//  spritesheet_ = 
+  // The file name format for the card should start with a letter c, d, h, or s to represent the suit.
+  // And it should be followed by a number 01-13 denoting the rank of the card.
+  for (Card::Suit suit : Deck::suits) {
+    vector<ci::gl::Texture2dRef> suited_card_sprites; // a vector of suited card sprites
+    string file_path = "sprites/";
+    
+    switch (suit) {
+      case Card::Clubs:
+        file_path += 'c';
+        break;
+      case Card::Diamonds:
+        file_path += 'd';
+        break;
+      case Card::Hearts:
+        file_path += 'h';
+        break;
+      case Card::Spades:
+        file_path += 's';
+        break;
+    }
+    
+    for (size_t rank_i = 1; rank_i <= 13; rank_i++) {
+      string num_rank_s = std::to_string(rank_i);
+      if (rank_i < 10) {
+        file_path += '0';
+      }
+      file_path += num_rank_s + ".png";
+      // Load a card sprite into the respective cards
+      suited_card_sprites.emplace_back(ci::gl::Texture2d::create(ci::loadImage(ci::app::loadAsset(file_path))));
+    }
+    deck_of_sprites_.push_back(suited_card_sprites);
+  }
 }
 } // namespace blackjack

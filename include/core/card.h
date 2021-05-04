@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <cinder/gl/Texture.h>
 
 using std::string;
 using std::vector;
@@ -32,14 +33,26 @@ class Card {
    */
   Card(Suit suit, Rank rank);
 
+  /** Constructor w/ sprite
+   * 
+   * @param suit the suit of the card (Clubs, Diamonds, Hearts, Spades)
+   * @param rank the symbol of the card (Ace, 2, 3, ..., 10, Jack, Queen, King)
+   * @param sprite the image of the card
+   */
+  Card(Suit suit, Rank rank, ci::gl::Texture2dRef sprite);
+
   /** Returns the suit of the card */
   Suit GetSuit() const;
 
   /** Returns the card rank */
   Rank GetRank() const;
+
+  /** Returns the sprite */
+  ci::gl::Texture2dRef GetSprite() const;
   
   /** Returns a string describing the card */
   string ToString() const;
+  
 
   /** Equal to operator overload - check if suit AND rank is the same */
   friend bool operator==(const Card &first, const Card &second);
@@ -50,6 +63,6 @@ class Card {
  private:
   Suit suit_; // the suit of the card
   Rank rank_; // the rank of the card and its corresponding value
-//  ci::gl::Texture2dRef sprite_; // the sprite of the card
+  ci::gl::Texture2dRef sprite_; // the sprite of the card
 };
 } // namespace blackjack

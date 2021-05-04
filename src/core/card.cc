@@ -4,6 +4,8 @@ namespace blackjack {
 
 Card::Card(Suit suit, Rank rank) : suit_(suit), rank_(rank) {}
 
+Card::Card(Suit suit, Rank rank, ci::gl::Texture2dRef sprite) : suit_(suit), rank_(rank), sprite_(sprite) {}
+
 Card::Suit Card::GetSuit() const {
   return suit_;
 }
