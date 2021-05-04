@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cinder/audio/audio.h>
+#include <cinder/audio/Voice.h>
 #include "core/game_engine.h"
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
@@ -14,7 +16,7 @@ namespace blackjack {
  *  Game flow:
  *  1. (X) Draw the table
  *  2. (X) Start with one player w/ default buy-in of $100
- *  3. Player places bet between $0 and balance by pressing up/down key
+ *  3. (X-) Player places bet between $0 and balance by pressing up/down key
  *  4. Press enter once betting is done to start the round
  *  5. Shuffle cards (play card shuffling sound effect)
  *  6. Deal cards, (deal animation preferred but hard to make, so save that once game is done)
@@ -49,7 +51,12 @@ namespace blackjack {
    const vector<float> kBetSizes = {0.f, 1.f, 5.f, 10.f, 20.f, 50.f, 100.f};
    const string kDefaultPlayerName = "Player";
 
+   /* Resources */
+  // todo: put some of the member variables here into their respective classes
    ci::gl::Texture2dRef card_back_; // sprite of the card back
+   ci::audio::VoiceRef shuffle_sound_; // sound to play when deck is shuffled
+   
+   /* Game Engine-related */
    GameEngine engine_; // the blackjack game engine
    map<string, float> bets_; // the bets of each player for the round
    bool round_started_ = false; // whether the round has started  

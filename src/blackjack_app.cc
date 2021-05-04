@@ -39,9 +39,11 @@ namespace blackjack {
 BlackjackApp::BlackjackApp() {
   ci::app::setWindowSize((int) ((double) kAspectRatio * kWindowSize), (int) kWindowSize);
   engine_.AddPlayer(kDefaultPlayerName, 100.f); // Single player for now
-  auto texture = ci::loadImage(R"(D:\Projects\Cinder\my-projects\final-project-teetajp\data\sprites\card_back_01.png)");
+  auto texture = ci::loadImage("..\\..\\..\\assets\\sprites\\card_back_01.png");
   card_back_ = ci::gl::Texture2d::create(texture);
   bets_[kDefaultPlayerName] = 0;
+  ci::audio::SourceFileRef sourceFile = ci::audio::load( ci::app::loadAsset( "sounds/shuffling-cards-4.wav" ) );
+  shuffle_sound_ = ci::audio::Voice::create(sourceFile);
 }
 
 // todo: turn magic numbers into constants
@@ -102,16 +104,16 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
     switch (event.getCode()) {
       /* The five keys below are only valid commands before each round begins */
       case ci::app::KeyEvent::KEY_RETURN:
-        // Start the round once players and bets are in
+        // Once everyone has confirmed their bets, start the round
         if (bet_confirmed && !round_started_) {
+          engine_.PlaceBets(bets_);
           engine_.ShuffleDeck();
-          // todo: play sound
+          shuffle_sound_->start();
           engine_.DealCards();
           // todo: display cards
           round_started_ = true;
           // todo: call draw() and implement control flow for when the game starts 
-        } else if (!bet_confirmed && !round_started_) {
-          engine_.PlaceBets(bets_);
+        } else if (!bet_confirmed && !round_started_) { // Player is confirming their bet
           bet_confirmed = true;
           // todo: if 2+ players, change indicator onto other players to confirm their bets
         }
