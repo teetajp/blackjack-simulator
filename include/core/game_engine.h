@@ -41,18 +41,8 @@ class GameEngine {
    * @param name the name of the player
    * @param buy_in how much chips the player wants to buy and play with
    */
-  void AddPlayer(string name, float buy_in);
-  
-  /** Gets the player with the specified name
-   * 
-   * @param name the name of the player to get
-   * @return a reference to the player
-   */
-  const Player& GetPlayer(string name) const;
-  
-  /** Resets all the hands and bets and starts the round */
-  void StartRound(istream &input);
-  
+  void AddPlayer(const string& name, float buy_in);
+
   /** Shuffles the current deck */
   void ShuffleDeck();
 
@@ -92,6 +82,6 @@ class GameEngine {
   Deck deck_; // deck of cards in play
   Dealer dealer_; // the person assigned as dealer
   vector<Player> players_; // the players who are playing in the round
-  Player* current_player; // player whose turn it is
+  Player* current_player{}; // player whose turn it is
 };
 } // namespace blackjack

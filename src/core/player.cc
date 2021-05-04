@@ -1,12 +1,14 @@
 #include <core/player.h>
 
+#include <utility>
+
 namespace blackjack {
 
 static const char * ResultStrings[] = { "Won", "Tied", "Lost", "In Progress", "Not in this Round" };
 
 Player::Player() : name_("Player"), balance_(100.0f), bet_(0.0f), result_(NotPlaying) {}
 
-Player::Player(string name, float balance) : name_(name), balance_(balance), bet_(0), result_(NotPlaying) {}
+Player::Player(string name, float balance) : name_(std::move(name)), balance_(balance), bet_(0), result_(NotPlaying) {}
 
 void Player::Win() {
   balance_ += 2 * bet_; // won the amount the player bet and return what the player bet

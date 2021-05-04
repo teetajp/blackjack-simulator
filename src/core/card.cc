@@ -13,7 +13,7 @@ Card::Rank Card::GetRank() const {
 }
 
 string Card::ToString() const {
-  string description = "";
+  string description;
   
   // Must use if statements, not switch case as switch case can't distinguish between face cards with equal value
   if (rank_ == Card::Ace) {

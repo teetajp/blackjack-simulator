@@ -29,7 +29,6 @@ class Dealer {
 
  private:
   static const size_t max_value_to_hit = 17; // dealer hits on all hand values below this value
-  static const bool hit_soft_max_value = true; // whether dealer hits on the max_value_to_hit if they have a soft hand
   Hand hand_; // the dealer's hand containing their cards
 };
 } // namespace blackjack

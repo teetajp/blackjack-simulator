@@ -16,7 +16,7 @@ using std::cout;
 void AddPlayers(GameEngine& engine);
 void RequestBets(GameEngine& engine);
 void DisplayPostRoundInfo(GameEngine& engine);
-void PrintHand(string name, const blackjack::Hand& hand);
+void PrintHand(const string& name, const blackjack::Hand& hand);
 
 /** Main method */
 int main() {
@@ -49,7 +49,7 @@ int main() {
         
         cout << "Available Actions: ";
         vector<string> actions = status.player_to_act->GetActions();
-        for (auto action : actions) {
+        for (const auto& action : actions) {
           cout << action;
           if (action != actions.back()) {
             cout << ", ";
@@ -58,7 +58,7 @@ int main() {
           }
         }
         cout << "Enter command: ";
-        string command = "";
+        string command;
         cin >> command;
         engine.PlayerPlays(command);
         status = engine.GetGameStatus();
@@ -82,7 +82,7 @@ void AddPlayers(GameEngine& engine) {
   for (size_t i = 0; i < n_players; i++) {
     cout << "Player " << i + 1 << std::endl;
     cout << "Name:";
-    string name = "";
+    string name;
     cin >> name;
     cout << "Buy-in ($):";
     float buy_in = 0;
@@ -122,7 +122,7 @@ void DisplayPostRoundInfo(GameEngine& engine) {
   cout << "----------------------" << std::endl;
 }
 
-void PrintHand(string name, const blackjack::Hand& hand){
+void PrintHand(const string& name, const blackjack::Hand& hand){
   cout << name << "'s cards: ";
   
   // Print all the cards

@@ -4,7 +4,7 @@ namespace blackjack {
 
 GameEngine::GameEngine()= default;
 
-void GameEngine::AddPlayer(string name, float buy_in) {
+void GameEngine::AddPlayer(const string& name, float buy_in) {
   // Check for existing user
   for (const Player& player : players_) {
     if (player.GetName() == name) {
@@ -14,34 +14,12 @@ void GameEngine::AddPlayer(string name, float buy_in) {
   players_.emplace_back(Player(name, buy_in));  
 }
 
-const Player& GameEngine::GetPlayer(string name) const {
-  for (const Player& player : players_) {
-    if (player.GetName() == name)
-      return player;
-  }
-  throw std::invalid_argument("Player does not exist");
-}
-
-void GameEngine::StartRound(istream &input) {
-//  deck_.Shuffle();
-//  RequestBets(input);
-//  DealCards();
-//  
-//  if (!PayBlackjacks()) {
-//    // True if dealer doesn't have blackjack and the bets' aren't settled
-//    PlayerPlays(input);
-//    DealerPlays();
-//    SettleBets();
-//  }
-//  ResetHands();
-}
-
 void GameEngine::ShuffleDeck() {
   deck_.Shuffle();
 }
 
 void GameEngine::PlaceBets(map<string, float>& bets) {
-  for (auto player_bet : bets) {
+  for (const auto& player_bet : bets) {
     // Find a player with the matching name and update the bet
     for (Player& player : players_) {
       if (player_bet.first == player.GetName()) {

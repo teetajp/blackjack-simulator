@@ -1,10 +1,10 @@
 #include "blackjack_app.h"
 
-using blackjack::BlackJackApp;
+using blackjack::BlackjackApp;
 
-void prepareSettings(IdealGasApp::Settings* settings) {
+void prepareSettings(BlackjackApp::Settings* settings) {
   settings->setResizable(false);
 }
 
 // This line is a macro that expands into an "int main()" function.
-CINDER_APP(BlackJackApp, ci::app::RendererGl, prepareSettings);
+CINDER_APP(BlackjackApp, ci::app::RendererGl, prepareSettings);
