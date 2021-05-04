@@ -6,6 +6,7 @@
 using std::string;
 using std::vector;
 
+
 namespace blackjack {
 
 /**
@@ -49,5 +50,6 @@ class Card {
  private:
   Suit suit_; // the suit of the card
   Rank rank_; // the rank of the card and its corresponding value
+//  ci::gl::Texture2dRef sprite_; // the sprite of the card
 };
 } // namespace blackjack

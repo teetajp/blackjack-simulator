@@ -1,6 +1,9 @@
 #pragma once
 
 #include "core/game_engine.h"
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 using glm::vec2;
 
@@ -38,15 +41,22 @@ namespace blackjack {
    
   private:
    static constexpr double kAspectRatio = (double) 4/3; // the ratio of horizontal pixel to vertical pixels 
-   static constexpr double kWindowSize = 900; // default window size in pixels
-   static constexpr double kMargin = 50; // margin from the window
+   static const size_t kWindowSize = 900; // default window size in pixels
+   static const size_t kMargin = 50; // margin from the window
    static const size_t kInstructionsFontSize = 30; // font size for the text telling playings what keys do what
    static const size_t kMaxPlayers = 3; // the maximum number of players/hand in this table (for this app)
    const ci::Color kBackgroundColor = ci::Color("green"); // casino green for the blackjack table
-   
+   const vector<float> kBetSizes = {1.f, 5.f, 10.f, 20.f, 50.f, 100.f};
+   const string kDefaultPlayerName = "Player";
    GameEngine engine_; // the blackjack game engine
    bool round_started_ = false; // whether the round has started  
-   ci::gl::Texture2dRef spritesheet_; // reference to the spritesheet
-   vector<vector<ci::gl::Texture2dRef>> card_sprites_; // 2d vector containing card sprites - [suit][rank]
+   ci::gl::Texture2dRef card_back_; // sprite of the card back
+   map<string, float> bets; // the bets of each player for the round
+   
+   
+  /** Displays the balance and bet for each player */
+  void DisplayPlayerInfo(size_t game_area_height);
+  
+  
  };
 }

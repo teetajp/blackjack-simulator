@@ -8,9 +8,6 @@
 #include <iostream>
 #include <map>
 
-#include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 
 using std::map;
 using std::istream;
@@ -89,6 +86,6 @@ class GameEngine {
   Deck deck_; // deck of cards in play
   Dealer dealer_; // the person assigned as dealer
   vector<Player> players_; // the players who are playing in the round
-  Player* current_player{}; // player whose turn it is
+  Player* current_player; // player whose turn it is
 };
 } // namespace blackjack

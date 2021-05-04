@@ -38,25 +38,48 @@ namespace blackjack {
 
 BlackjackApp::BlackjackApp() {
   ci::app::setWindowSize((int) ((double) kAspectRatio * kWindowSize), (int) kWindowSize);
-  engine_.AddPlayer("Player", 100.f); // Single player for now
-  auto texture = ci::loadImage(R"(D:\Projects\Cinder\my-projects\final-project-teetajp\data\sprites\cards.png)");
-  spritesheet_ = ci::gl::Texture2d::create(texture);
+  engine_.AddPlayer(kDefaultPlayerName, 100.f); // Single player for now
+  auto texture = ci::loadImage(R"(D:\Projects\Cinder\my-projects\final-project-teetajp\data\sprites\card_back_01.png)");
+  card_back_ = ci::gl::Texture2d::create(texture);
 }
 
 // todo: turn magic numbers into constants
 void BlackjackApp::draw() {
-  ci::gl::clear(kBackgroundColor); // Clear the screen to the default background color
-  ci::gl::drawStringCentered("Press H to hit. S to stand. D to double down.",
-      vec2(getWindowCenter().x, getWindowHeight() - kMargin), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+  // TODO: Resize cards
+  ci::gl::clear(kBackgroundColor);
+  ci::gl::setMatricesWindow( getWindowSize());
   
-//  ci::gl::draw(spritesheet_);
-  // draw the texture itself in the upper right corner	
-  ci::gl::setMatricesWindow( getWindowSize() );
-  ci::Rectf drawRect( 0, 0, (float) spritesheet_->getWidth() / 3,
-                      (float) spritesheet_->getHeight() / 3 );
-  ci::gl::draw( spritesheet_, drawRect);
+  // Draw the house rules texts
+  ci::gl::drawStringCentered("BLACKJACK PAYS 3 TO 2",
+                             vec2(getWindowCenter().x, (float) card_back_->getHeight() + 2 * kMargin - kInstructionsFontSize), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+  ci::gl::drawStringCentered("DEALER MUST STAND ON 17 AND DRAW TO 16",
+                             vec2(getWindowCenter().x, (float) card_back_->getHeight() + 2 * kMargin), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+  // todo: make a curve for the text
+  
+  // Draw instruction texts
+  ci::gl::drawStringCentered("Before Round: [Up Arrow] - Increment bet, [Down Arrow] - Decrement bet",
+      vec2(getWindowCenter().x, getWindowHeight() - kMargin - kInstructionsFontSize), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+  ci::gl::drawStringCentered("During Round: [H] - Hit. [S] - Stand. [D] - Double Down.",
+                             vec2(getWindowCenter().x, getWindowHeight() - kMargin), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+  
+  // Draw a divider between instructions and the game area
+  ci::gl::color(ci::Color("black"));
+  size_t game_area_height = getWindowHeight() - kMargin - 2 * kInstructionsFontSize;
+  ci::gl::drawSolidRect(ci::Rectf(vec2(kMargin, game_area_height), vec2(getWindowWidth() - kMargin, game_area_height + 5)));
+  
+  // Draw a card deck in the upper right corner
+  ci::gl::color(ci::Color("white"));
+  for (size_t i = 0; i < 10; i++) {
+    size_t card_gap = i * 2; // Used to create a stacking effect
+    ci::Rectf card_rect((float) getWindowWidth() - card_back_->getWidth() - kMargin - card_gap, (float) kMargin + card_gap,
+                        (float) getWindowWidth() - kMargin - card_gap, (float) card_back_->getHeight() + kMargin + card_gap);
+    ci::gl::draw(card_back_, card_rect);
+  }
+
+  DisplayPlayerInfo(game_area_height);
+  
   /* Create bounds and shade in the background */
-  
+  // Good card gap for stacking two is 15-20 on the x
 //  vec2 pixel_top_left(0, 0);
 //  vec2 pixel_bottom_right(kMargin+500, kMargin+500);
 //
@@ -78,7 +101,7 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
     switch (event.getCode()) {
       /* The five keys below are only valid commands before each round begins */
       case ci::app::KeyEvent::KEY_RETURN:
-        // Start the round once players and bets are in (errors?)
+        // Start the round once players and bets are in
         engine_.ShuffleDeck();
         // todo: play sound
         engine_.DealCards();
@@ -87,6 +110,7 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
         return;
       case ci::app::KeyEvent::KEY_UP:
         // Increments bet amount by $5, maximum is the player's balance
+        
         return;
       case ci::app::KeyEvent::KEY_DOWN:
         // Decrements bet amount by $5, minimum is $1
@@ -115,4 +139,29 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
       return;
   }
 }
+
+void BlackjackApp::DisplayPlayerInfo(size_t game_area_height) {
+  // todo: extend to multiple players and put coordinates for display as member variable in player class
+  
+  float bet = 0; // Default bet is 0, let player increment
+  bets[kDefaultPlayerName] = bet;
+  GameStatus status = engine_.GetGameStatus();
+  
+  // Display the player balance
+  float balance = status.players.front()->GetBalance();
+
+  // Convert balance to a two-decimal point string
+  // Snippet from: https://stackoverflow.com/questions/29200635/convert-float-to-string-with-precision-number-of-decimal-digits-specified
+  std::stringstream stream;
+  stream << std::fixed << std::setprecision(2) << balance;
+  std::string balance_s = stream.str();
+  
+  ci::gl::drawStringCentered("Balance: " + balance_s,
+                             vec2(getWindowCenter().x, game_area_height + kInstructionsFontSize), ci::Color("black"), ci::Font("Arial", (float) kInstructionsFontSize));
+  
+  // Display the default or last bet
+  
+    
+  
+  }
 }
