@@ -21,7 +21,7 @@ namespace blackjack {
  *  5. (X) Shuffle cards (play card shuffling sound effect)
  *  6. (X) Deal cards, (deal animation preferred but hard to make, so save that once game is done)
  *     - Display players' cards then dealer's cards with one face up, one face down
- *  7. Dealer checks for blackjack if ace/ten card, then settle bets if he has it (go to end). If not, continue
+ *  7. (X) Dealer checks for blackjack if ace/ten card, then settle bets if he has it (go to end). If not, continue
  *     - Show message for any player w/ blackjack
  *  8. Each player takes action until out of moves or bust
  *  9. If some players not bust or blackjack, dealer shows card and dealer plays. If not bust, continue.

@@ -223,7 +223,7 @@ void BlackjackApp::DisplayDealer() {
   const vector<Card>& dealer_cards = status_.dealers_hand->GetCards();
 
   // All players are out of actions, or dealer has blackjack
-  if (status_.player_to_act == nullptr || status_.dealers_hand->HasBlackjack() || true) { // No one left to act, so show other dealer card(s)
+  if (status_.player_to_act == nullptr || status_.dealers_hand->HasBlackjack()) { // No one left to act, so show other dealer card(s)
     // Draw all dealer's cards face up.
     for (size_t i = 0; i < dealer_cards.size(); i++) {
       const ci::gl::Texture2dRef& card_sprite = dealer_cards[i].GetSprite();
