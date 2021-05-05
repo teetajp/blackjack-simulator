@@ -14,7 +14,7 @@ By the end of Week 1, I will have created the game engine and the basic CLI and 
 
 By the end of Week 2, I will have implemented most of my GUI to make it functional for the user to play the game, and start polishing up the aesthetics of the GUI.
 
-(Not started)
+(Completed)
 
 By the end of Week 3, I will have finished polishing up the GUI and make a side user interface to show the optimal strategy.
 
