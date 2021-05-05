@@ -32,12 +32,12 @@ namespace blackjack {
  * Reset the table after each round
  * 
  * Use booleans to separate game stages
- *  todo: working on - add players
  */
 
 
-BlackjackApp::BlackjackApp() : engine_(GameEngine(4, true)){
+BlackjackApp::BlackjackApp(){
   ci::app::setWindowSize((int) ((double) kAspectRatio * kWindowSize), (int) kWindowSize);
+  engine_ = GameEngine(4, true);
   engine_.AddPlayer(kDefaultPlayerName, 100.f); // Single player for now
   card_back_ = ci::gl::Texture2d::create(ci::loadImage(ci::app::loadAsset("sprites/card_back_01.png")));
   card_height_ = card_back_->getHeight();
@@ -66,7 +66,6 @@ void BlackjackApp::draw() {
                              vec2(getWindowCenter().x, (float) card_back_->getHeight() + 4 * kMargin),
                              ci::Color("black"),
                              ci::Font("Arial", (float) kFontSize));
-  // todo: make a curve for the text
 
   // Draw instruction texts
   ci::gl::drawStringCentered(
@@ -102,10 +101,6 @@ void BlackjackApp::draw() {
     DisplayPlayerCards(game_area_height - kMargin - 2 * kFontSize);
     DisplayDealer();
   }
-
-  // todo: dealer on top, deck on side, with two+ holes for dealer cards
-  // todo: players on bottom, up to however many players, get 1 player first
-
 }
 
 void BlackjackApp::keyDown(ci::app::KeyEvent event) {
@@ -114,7 +109,7 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
     switch (event.getCode()) {
       case ci::app::KeyEvent::KEY_RETURN:
         // Once everyone has confirmed their bets, start the round
-        if (bet_confirmed && !round_started_) {
+        if (bet_confirmed) {
           engine_.PlaceBets(bets_);
           engine_.ShuffleDeck();
           shuffle_sound_->start();
@@ -129,7 +124,7 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
             bets_settled = true;
             bet_confirmed = false;
           }
-        } else if (!bet_confirmed && !round_started_) { // Player is confirming their bet
+        } else if (!bet_confirmed) { // Player is confirming their bet
           bet_confirmed = true;
           // todo: if 2+ players, change indicator onto other players to confirm their bets
         }
@@ -167,7 +162,6 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
     }
   }
   // During the round, players may hit stand or double down when it is their turn
-  // todo: implement error handling
 
   if (status_.player_to_act != nullptr) {
     switch (event.getCode()) {

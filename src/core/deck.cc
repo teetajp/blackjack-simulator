@@ -18,7 +18,7 @@ void Deck::AddDeck() {
 
     for (Card::Rank rank : ranks) {
       if (spritesheet_ != nullptr) {
-        cards_.emplace_back(Card(suit, rank, (*spritesheet_)[suit_i][rank_i]));
+        cards_.push_back(*(new Card(suit, rank, (*spritesheet_)[suit_i][rank_i])));
       } else {
         cards_.emplace_back(Card(suit, rank));
       }
