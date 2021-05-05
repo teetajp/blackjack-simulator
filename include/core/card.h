@@ -7,7 +7,6 @@
 using std::string;
 using std::vector;
 
-
 namespace blackjack {
 
 /**
@@ -48,11 +47,10 @@ class Card {
   Rank GetRank() const;
 
   /** Returns the sprite */
-  const ci::gl::Texture2dRef& GetSprite() const;
-  
+  const ci::gl::Texture2dRef &GetSprite() const;
+
   /** Returns a string describing the card */
   string ToString() const;
-  
 
   /** Equal to operator overload - check if suit AND rank is the same */
   friend bool operator==(const Card &first, const Card &second);

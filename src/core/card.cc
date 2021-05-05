@@ -14,13 +14,13 @@ Card::Rank Card::GetRank() const {
   return rank_;
 }
 
-const ci::gl::Texture2dRef & Card::GetSprite() const {
+const ci::gl::Texture2dRef &Card::GetSprite() const {
   return sprite_;
 }
 
 string Card::ToString() const {
   string description;
-  
+
   // Must use if statements, not switch case as switch case can't distinguish between face cards with equal value
   if (rank_ == Card::Ace) {
     description += "Ace";
@@ -50,7 +50,7 @@ string Card::ToString() const {
     description += "King";
   }
   description += " of ";
-  
+
   if (suit_ == Card::Clubs) {
     description += "Clubs";
   } else if (suit_ == Card::Diamonds) {

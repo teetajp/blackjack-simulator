@@ -13,13 +13,13 @@ TEST_CASE("Dealer Constructor") {
 TEST_CASE("DealerPlay") {
   Deck deck;
   Dealer dealer;
-  
+
   SECTION("Hits until 17 or more") {
     dealer.DealerPlay(&deck);
     REQUIRE(dealer.GetHand().CalculateHandValue() >= 17);
     REQUIRE(dealer.GetHand().GetCards().size() >= 2);
   }
-  
+
   SECTION("Hits on soft 17") {
     dealer.GetHand().AddCard(Card(Card::Hearts, Card::Ace));
     dealer.GetHand().AddCard(Card(Card::Spades, Card::Six));

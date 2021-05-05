@@ -8,7 +8,6 @@
 #include <iostream>
 #include <map>
 
-
 using std::map;
 using std::istream;
 using std::vector;
@@ -17,11 +16,10 @@ namespace blackjack {
 
 /** Holds the information that the client needs to know to interact with the engine */
 struct GameStatus {
-  vector<const Player*> players; // all the players and their information
-  const Hand* dealers_hand; // the cards in the dealer's hand
-  const Player* player_to_act; // the player whose turn it is to act
+  vector<const Player *> players; // all the players and their information
+  const Hand *dealers_hand; // the cards in the dealer's hand
+  const Player *player_to_act; // the player whose turn it is to act
 };
-
 
 /**
  * The Game Engine class runs the game, taking in input from the user and outputting the results
@@ -43,7 +41,7 @@ class GameEngine {
    * @param name the name of the player
    * @param buy_in how much chips the player wants to buy and play with
    */
-  void AddPlayer(const string& name, float buy_in);
+  void AddPlayer(const string &name, float buy_in);
 
   /** Shuffles the current deck */
   void ShuffleDeck();
@@ -52,7 +50,7 @@ class GameEngine {
    * 
    * @param bets a mapping of player name to their bet
    */
-  void PlaceBets(map<string, float>& bets);
+  void PlaceBets(map<string, float> &bets);
 
   /** Deals cards to all the players in order then the dealer */
   void DealCards();
@@ -73,20 +71,20 @@ class GameEngine {
 
   /** Check whether each player won, lost/bust, or push and pay/take their bets accordingly */
   void SettleBets();
-  
+
   /** Resets the dealer's and all the players' hand */
   void ResetHands();
-  
+
   /** Gets the status of the game, including each player's information and dealer's hand */
   GameStatus GetGameStatus();
-  
+
   /** Replaces the deck with a deck where each card has a sprite */
   void LoadTextures();
-  
+
  private:
   Deck deck_; // deck of cards in play
   Dealer dealer_; // the person assigned as dealer
   vector<Player> players_; // the players who are playing in the round
-  Player* current_player; // player whose turn it is
+  Player *current_player; // player whose turn it is
 };
 } // namespace blackjack

@@ -28,53 +28,53 @@ namespace blackjack {
  *  10. Compare card value for player and dealer, pay players off accordingly.
  *     - Show an game result message.
  */
- class BlackjackApp : public ci::app::App {
-  public:
-   /** Default constructor */
-   BlackjackApp();
-   
-   /** Called before the start of every round */
-   void draw() override;
-   
+class BlackjackApp : public ci::app::App {
+ public:
+  /** Default constructor */
+  BlackjackApp();
+
+  /** Called before the start of every round */
+  void draw() override;
+
 //   void update() override;
 
-   /** Before each round, allow user to add/remove player and adjust bets */
-   void keyDown(ci::app::KeyEvent event) override;
-   
-  private:
-   static constexpr double kAspectRatio = (double) 4/3; // the ratio of horizontal pixel to vertical pixels 
-   static const size_t kWindowSize = 900; // default window size in pixels
-   static const size_t kMargin = 50; // margin from the window
-   static const size_t kFontSize = 30; // font size for the text telling playings what keys do what
-   static const size_t kMaxPlayers = 3; // the maximum number of players/hand in this table (for this app)
-   const ci::Color kBackgroundColor = ci::Color("green"); // casino green for the blackjack table
-   const vector<float> kBetSizes = {0.f, 1.f, 5.f, 10.f, 20.f, 50.f, 100.f};
-   const string kDefaultPlayerName = "Player";
-   GLint card_height_; // the height of a card assuming all cards have the same dimensions
-   GLint card_width_; // the width of a card assuming all cards have the same dimensions
+  /** Before each round, allow user to add/remove player and adjust bets */
+  void keyDown(ci::app::KeyEvent event) override;
 
-   /* Resources */
-   // todo: put some of the member variables here into their respective classes
-   ci::gl::Texture2dRef card_back_; // sprite of the card back
-   ci::audio::VoiceRef shuffle_sound_; // sound to play when deck is shuffled
-   
-   /* Game Engine-related */
-   GameEngine engine_; // the blackjack game engine
-   map<string, float> bets_; // the bets of each player for the round
-   GameStatus status_; // players' information in the game
-   bool round_started_ = false; // whether the round has started  
-   bool bet_confirmed = false; // whether a player has confirmed their bet (turn into vector for 2+ players)
-   
+ private:
+  static constexpr double kAspectRatio = (double) 4 / 3; // the ratio of horizontal pixel to vertical pixels 
+  static const size_t kWindowSize = 900; // default window size in pixels
+  static const size_t kMargin = 50; // margin from the window
+  static const size_t kFontSize = 30; // font size for the text telling playings what keys do what
+  static const size_t kMaxPlayers = 3; // the maximum number of players/hand in this table (for this app)
+  const ci::Color kBackgroundColor = ci::Color("green"); // casino green for the blackjack table
+  const vector<float> kBetSizes = {0.f, 1.f, 5.f, 10.f, 20.f, 50.f, 100.f};
+  const string kDefaultPlayerName = "Player";
+  GLint card_height_; // the height of a card assuming all cards have the same dimensions
+  GLint card_width_; // the width of a card assuming all cards have the same dimensions
+
+  /* Resources */
+  // todo: put some of the member variables here into their respective classes
+  ci::gl::Texture2dRef card_back_; // sprite of the card back
+  ci::audio::VoiceRef shuffle_sound_; // sound to play when deck is shuffled
+
+  /* Game Engine-related */
+  GameEngine engine_; // the blackjack game engine
+  map<string, float> bets_; // the bets of each player for the round
+  GameStatus status_; // players' information in the game
+  bool round_started_ = false; // whether the round has started  
+  bool bet_confirmed = false; // whether a player has confirmed their bet (turn into vector for 2+ players)
+
   /** Displays the balance and bet for each player */
   void DisplayPlayerInfo(float game_area_height);
-  
+
   /** Displays players' cards */
   void DisplayPlayerCards(float player_cards_height);
-  
+
   /** Displays the dealer's card and info */
   void DisplayDealer();
-  
-  /** Shows messages related to their outcome or possible actions */ 
+
+  /** Shows messages related to their outcome or possible actions */
 //  void ShowResults();
- };
+};
 }

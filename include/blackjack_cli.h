@@ -6,14 +6,12 @@ using blackjack::GameEngine;
 using std::cin;
 using std::cout;
 
-
-
-void AddPlayers(GameEngine& engine) {
+void AddPlayers(GameEngine &engine) {
   size_t n_players;
   cout << "Specify Number of Players: ";
   cin >> n_players;
   cout << endl;
-  
+
   for (size_t i = 0; i < n_players; i++) {
     cout << "Player " << i + 1 << std::endl;
     cout << "Name: ";

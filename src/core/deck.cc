@@ -6,7 +6,7 @@ Deck::Deck() : next_card_index_(0), spritesheet_(nullptr) {
   AddDeck();
 }
 
-Deck::Deck(const vector<vector<ci::gl::Texture2dRef>>* spritesheet) : next_card_index_(0), spritesheet_(spritesheet) {
+Deck::Deck(const vector<vector<ci::gl::Texture2dRef>> *spritesheet) : next_card_index_(0), spritesheet_(spritesheet) {
   AddDeck();
 }
 
@@ -15,7 +15,7 @@ void Deck::AddDeck() {
   size_t suit_i = 0;
   for (Card::Suit suit : suits) {
     size_t rank_i = 0;
-    
+
     for (Card::Rank rank : ranks) {
       if (spritesheet_ != nullptr) {
         cards_.emplace_back(Card(suit, rank, (*spritesheet_)[suit_i][rank_i]));

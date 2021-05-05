@@ -11,7 +11,7 @@ namespace blackjack {
 
 /** All the actions a player can take during a round */
 static const vector<string> kAllActions = {
-  "hit", "stand", "double"
+    "hit", "stand", "double"
 };
 
 /**
@@ -20,11 +20,11 @@ static const vector<string> kAllActions = {
  */
 class Player {
  public:
-  
+
   enum Result { // state of the player after the round
     Won, Tied, Lost, AwaitingComparison, InProgress, NotPlaying
   };
-  
+
   /** Default constructor */
   Player();
   
@@ -61,43 +61,43 @@ class Player {
    * @param bet the amount to bet in the round
    */
   void PlaceBet(float bet);
-  
+
   /** Doubles the bet of a player and draws a final card */
-  void DoubleDown(Deck& deck);
-  
+  void DoubleDown(Deck &deck);
+
   /** Adds a card to the hand */
-  void Hit(Deck& deck);
+  void Hit(Deck &deck);
 
   /** Clears all the cards from the player's hand */
   void ResetHand();
-  
+
   /** Set the state of the player (won, lost, tied, in progress) */
   void SetResult(Result result);
-  
+
   /** Updates the actions a player can take */
   void UpdateActions();
-  
+
   /** Gets the name of the player */
   string GetName() const;
 
   /** Gets the amount of money the player has at the table */
   float GetBalance() const;
-  
+
   /** Gets the amount the player bet in the round */
   float GetBet() const;
-  
+
   /** Gets the player's hand */
-  const Hand& GetHand() const;
-  
+  const Hand &GetHand() const;
+
   /** Returns the result of the round */
   Result GetResult() const;
-  
+
   /** Returns the actions a player can take currently */
   vector<string> GetActions() const;
 
   /** Returns the result in the form of a string */
   string ResultToString() const;
-  
+
  private:
   string name_; // the name of the player
   float balance_; // the amount of money the player has

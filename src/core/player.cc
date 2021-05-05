@@ -4,7 +4,7 @@
 
 namespace blackjack {
 
-static const char * ResultStrings[] = { "Won", "Tied", "Lost", "Awaiting Comparison", "In Progress", "Not in this Round" };
+static const char *ResultStrings[] = {"Won", "Tied", "Lost", "Awaiting Comparison", "In Progress", "Not in this Round"};
 
 Player::Player() : name_("Player " + std::to_string(rand())), balance_(100.0f), bet_(0.0f), result_(NotPlaying) {}
 
@@ -35,7 +35,7 @@ void Player::Blackjack() {
 
 void Player::PlaceBet(float bet) {
   bet_ = bet;
-  
+
   if (bet_ <= 0 || bet_ > balance_) {
     result_ = NotPlaying;
   } else {
@@ -45,7 +45,7 @@ void Player::PlaceBet(float bet) {
   UpdateActions();
 }
 
-void Player::DoubleDown(Deck& deck) {
+void Player::DoubleDown(Deck &deck) {
   balance_ -= bet_; // A bet should have already been made, so we just take out one more bet amount
   bet_ *= 2;
   Hit(deck);
@@ -67,11 +67,9 @@ void Player::SetResult(Result result) {
 
 void Player::UpdateActions() {
   switch (result_) {
-    case InProgress:
-      available_actions_ = kAllActions;
+    case InProgress:available_actions_ = kAllActions;
       break;
-    default:
-      available_actions_.clear();
+    default:available_actions_.clear();
   }
 }
 
@@ -87,8 +85,8 @@ float Player::GetBalance() const {
   return balance_;
 }
 
-const Hand& Player::GetHand() const{
-  const Hand& hand = hand_;
+const Hand &Player::GetHand() const {
+  const Hand &hand = hand_;
   return hand;
 }
 

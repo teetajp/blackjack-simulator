@@ -11,7 +11,7 @@ class Hand {
  public:
   static const size_t kMaxHandValue = 21; // the max hand value before going bust
   static const size_t kMaxAceValue = 11; // the higher of the values for ace (can be 1 or 11)
-  
+
   /** Default constructor */
   Hand();
 
@@ -25,7 +25,7 @@ class Hand {
   size_t CalculateHandValue() const;
 
   /** Returns a copied vector of cards in the hand */
-  const vector<Card>& GetCards() const;
+  const vector<Card> &GetCards() const;
 
   /** Checks whether the hand contains an Ace and a 10-card (Ten, Jack, Queen, King)
     * 
@@ -35,7 +35,7 @@ class Hand {
 
   /** Returns true if the hand has an ace */
   bool HasAce() const;
-  
+
   /** Returns true if the hand total is over 21 */
   bool IsBust() const;
 
