@@ -108,10 +108,10 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
           shuffle_sound_->start();
           engine_.DealCards();
           round_started_ = true;
+          draw();
           if (engine_.PayBlackjacks()) { // Dealer has blackjack
             round_started_ = false;
           }
-          draw();
         } else if (!bet_confirmed && !round_started_) { // Player is confirming their bet
           bet_confirmed = true;
           // todo: if 2+ players, change indicator onto other players to confirm their bets
@@ -165,7 +165,6 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
 
 void BlackjackApp::DisplayPlayerInfo(float game_area_height) {
   // todo: extend to multiple players and put coordinates for display as member variable in player class
-  
   status_ = engine_.GetGameStatus();
   
   // Display the player balance
@@ -193,14 +192,17 @@ void BlackjackApp::DisplayPlayerInfo(float game_area_height) {
   ci::gl::drawString("Bet:        $" + bet_s,
                      vec2(getWindowCenter().x - 2 * kMargin, game_area_height - kMargin - kFontSize), ci::Color("black"), ci::Font("Arial", (float) kFontSize));
 
-  // Display the player's and dealer's hand value
+  // Display the player's hand value
   string hand_value = std::to_string(status_.players.front()->GetHand().CalculateHandValue());
   ci::gl::drawString("Hand Value: " + hand_value,
                      vec2(getWindowCenter().x - 2 * kMargin, game_area_height - kMargin - 2 * kFontSize), ci::Color("black"), ci::Font("Arial", (float) kFontSize));
-  // todo: display dealer hand value depending on which stage game is in
   
   // Display player's state
-  ci::gl::drawString("Result: " + status_.players.front()->ResultToString(),
+  string result = status_.players.front()->ResultToString();
+  if (status_.players.front()->GetHand().HasBlackjack()) {
+    result += " (Blackjack)";
+  }
+  ci::gl::drawString("Result: " + result,
                      vec2(getWindowCenter().x - 2 * kMargin, game_area_height - kMargin - 3 * kFontSize), ci::Color("black"), ci::Font("Arial", (float) kFontSize));
 }
 
@@ -208,22 +210,13 @@ void BlackjackApp::DisplayPlayerInfo(float game_area_height) {
     ci::gl::color(ci::Color("white"));
     const vector<Card>& player_cards = status_.players.front()->GetHand().GetCards();
     
-    // Draw players' cards
-    float top_of_cards = 0.f;
-    
     for (size_t i = 0; i < player_cards.size(); i++) {
       const ci::gl::Texture2dRef& card_sprite = player_cards[i].GetSprite();
       size_t card_gap = i * 25;
       ci::Rectf card_rect((float) getWindowCenter().x - card_sprite->getWidth() + card_gap, (float) player_cards_height - card_sprite->getHeight() - kMargin,
                           (float) getWindowCenter().x + card_gap, (float) player_cards_height - kMargin);
       ci::gl::draw(card_sprite, card_rect);
-      top_of_cards = player_cards_height - card_sprite->getHeight() - kMargin;
     }
-        
-    // Display the dealer's card value
-//    string hand_value = std::to_string(status_.players.front()->GetHand().CalculateHandValue());
-//    ci::gl::drawString("Hand Value: " + hand_value,
-//                       vec2(getWindowCenter().x + card_gap + kMargin, mid_card_pos), ci::Color("black"), ci::Font("Arial", (float) kFontSize));
   }
   
 void BlackjackApp::DisplayDealer() {
