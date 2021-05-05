@@ -1,10 +1,19 @@
 #include <core/game_engine.h>
-#include <cinder/gl/Texture.h>
 #include <cinder/app/AppBase.h>
 
 namespace blackjack {
 
 GameEngine::GameEngine() = default;
+
+GameEngine::GameEngine(size_t deck_count, bool load_textures) {
+  if (load_textures) {
+    LoadTextures();
+  }
+  for (size_t i = 0; i < deck_count - 1; i++) {
+    deck_.AddDeck();
+  }
+}
+
 
 void GameEngine::AddPlayer(const string &name, float buy_in) {
   // Check for existing user
@@ -94,7 +103,7 @@ void GameEngine::PlayerPlays(string command) {
 
 void GameEngine::DealerPlays() {
   bool players_done = true;
-  for (auto player : players_) {
+  for (const auto& player : players_) {
     if (players_done && !(player.GetHand().HasBlackjack() || player.GetHand().IsBust()))
       players_done = false;
   }
@@ -200,4 +209,5 @@ void GameEngine::LoadTextures() {
   }
   deck_ = Deck(&card_spritesheet);
 }
+
 } // namespace blackjack

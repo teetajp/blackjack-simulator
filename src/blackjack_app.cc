@@ -36,10 +36,9 @@ namespace blackjack {
  */
 
 
-BlackjackApp::BlackjackApp() {
+BlackjackApp::BlackjackApp() : engine_(GameEngine(4, true)){
   ci::app::setWindowSize((int) ((double) kAspectRatio * kWindowSize), (int) kWindowSize);
   engine_.AddPlayer(kDefaultPlayerName, 100.f); // Single player for now
-  engine_.LoadTextures();
   card_back_ = ci::gl::Texture2d::create(ci::loadImage(ci::app::loadAsset("sprites/card_back_01.png")));
   card_height_ = card_back_->getHeight();
   card_width_ = card_back_->getWidth();
@@ -121,9 +120,14 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
           shuffle_sound_->start();
           engine_.DealCards();
           round_started_ = true;
+          bets_settled = false;
           draw();
+          
           if (engine_.PayBlackjacks()) { // Dealer has blackjack
+            engine_.ResetHands();
             round_started_ = false;
+            bets_settled = true;
+            bet_confirmed = false;
           }
         } else if (!bet_confirmed && !round_started_) { // Player is confirming their bet
           bet_confirmed = true;
@@ -165,23 +169,27 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
   // During the round, players may hit stand or double down when it is their turn
   // todo: implement error handling
 
-  switch (event.getCode()) {
-    case ci::app::KeyEvent::KEY_h:engine_.PlayerPlays("hit");
-      break;
-    case ci::app::KeyEvent::KEY_s:engine_.PlayerPlays("stand");
-      break;
-    case ci::app::KeyEvent::KEY_d:engine_.PlayerPlays("double");
-      break;
-    case ci::app::KeyEvent::KEY_BACKSPACE:
-      if (status_.player_to_act == nullptr) {
-        engine_.ResetHands();
-        round_started_ = false;
-      }
-  }
-  update();
-  if (round_started_ && status_.player_to_act == nullptr) { // No one left to act, so continue to end of the game
-    engine_.DealerPlays();
-    engine_.SettleBets();
+  if (status_.player_to_act != nullptr) {
+    switch (event.getCode()) {
+      case ci::app::KeyEvent::KEY_h:engine_.PlayerPlays("hit");
+        break;
+      case ci::app::KeyEvent::KEY_s:engine_.PlayerPlays("stand");
+        break;
+      case ci::app::KeyEvent::KEY_d:engine_.PlayerPlays("double");
+        break;
+    }
+    update();
+  } else {
+    if (round_started_ && status_.player_to_act == nullptr) { // No one left to act, so continue to end of the game
+      engine_.DealerPlays();
+      engine_.SettleBets();
+      bets_settled = true;
+    }
+    if (bets_settled && event.getCode() == ci::app::KeyEvent::KEY_BACKSPACE) {
+      engine_.ResetHands();
+      round_started_ = false;
+      bet_confirmed = false;
+    }
   }
   draw();
 }

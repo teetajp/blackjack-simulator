@@ -65,7 +65,8 @@ class BlackjackApp : public ci::app::App {
   GameStatus status_; // players' information in the game
   bool round_started_ = false; // whether the round has started  
   bool bet_confirmed = false; // whether a player has confirmed their bet (turn into vector for 2+ players)
-
+  bool bets_settled = false; // whether bets are settled
+  
   /** Displays the balance and bet for each player */
   void DisplayPlayerInfo(float game_area_height);
 

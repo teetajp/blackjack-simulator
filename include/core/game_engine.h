@@ -36,6 +36,13 @@ class GameEngine {
   /** Default Constructor */
   GameEngine();
 
+  /** Constructor meant for GUI, allowing different deck count and textures to be loaded
+   * 
+   * @param deck_count number of decks to play with
+   * @param load_textures whether to load textures to the cards or not
+   */
+  GameEngine(size_t deck_count, bool load_textures);
+
   /** Adds a player to the game
    * 
    * @param name the name of the player
@@ -85,6 +92,6 @@ class GameEngine {
   Deck deck_; // deck of cards in play
   Dealer dealer_; // the person assigned as dealer
   vector<Player> players_; // the players who are playing in the round
-  Player *current_player; // player whose turn it is
+  Player *current_player{}; // player whose turn it is
 };
 } // namespace blackjack
