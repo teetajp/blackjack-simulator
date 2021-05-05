@@ -50,13 +50,13 @@ class BlackjackApp : public ci::app::App {
   const ci::Color kBackgroundColor = ci::Color("green"); // casino green for the blackjack table
   const vector<float> kBetSizes = {0.f, 1.f, 5.f, 10.f, 20.f, 50.f, 100.f};
   const string kDefaultPlayerName = "Player";
+
+  /* Resource-related */
+  ci::gl::Texture2dRef card_back_; // sprite of the card back
+  ci::audio::VoiceRef shuffle_sound_; // sound to play when deck is shuffled'
+  ci::gl::Texture2dRef strategy_helper_; // image of a basic strategy chart
   GLint card_height_; // the height of a card assuming all cards have the same dimensions
   GLint card_width_; // the width of a card assuming all cards have the same dimensions
-
-  /* Resources */
-  // todo: put some of the member variables here into their respective classes
-  ci::gl::Texture2dRef card_back_; // sprite of the card back
-  ci::audio::VoiceRef shuffle_sound_; // sound to play when deck is shuffled
 
   /* Game Engine-related */
   GameEngine engine_; // the blackjack game engine
@@ -73,8 +73,5 @@ class BlackjackApp : public ci::app::App {
 
   /** Displays the dealer's card and info */
   void DisplayDealer();
-
-  /** Shows messages related to their outcome or possible actions */
-//  void ShowResults();
 };
 }

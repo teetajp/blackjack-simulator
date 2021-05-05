@@ -39,6 +39,7 @@ BlackjackApp::BlackjackApp(){
   ci::app::setWindowSize((int) ((double) kAspectRatio * kWindowSize), (int) kWindowSize);
   engine_.AddPlayer(kDefaultPlayerName, 100.f); // Single player for now
   engine_.LoadTextures();
+  strategy_helper_ = ci::gl::Texture2d::create(ci::loadImage(ci::app::loadAsset("bj_soft17_strategy.gif")));
   card_back_ = ci::gl::Texture2d::create(ci::loadImage(ci::app::loadAsset("sprites/card_back_01.png")));
   card_height_ = card_back_->getHeight();
   card_width_ = card_back_->getWidth();
@@ -100,6 +101,13 @@ void BlackjackApp::draw() {
     DisplayPlayerCards(game_area_height - kMargin - 2 * kFontSize);
     DisplayDealer();
   }
+  
+  // Draw Strategy Helper
+  ci::gl::color(ci::Color("white"));
+  ci::Rectf
+  strategy_rect((float) 0, (float) 0,
+            (float) strategy_helper_->getWidth(), (float) strategy_helper_->getHeight());
+  ci::gl::draw(strategy_helper_, strategy_rect);
 }
 
 void BlackjackApp::keyDown(ci::app::KeyEvent event) {

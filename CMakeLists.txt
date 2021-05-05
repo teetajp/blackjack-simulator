@@ -57,7 +57,6 @@ list(APPEND CORE_SOURCE_FILES src/core/card.cc
         src/core/game_engine.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
-        src/blackjack_cli.cc
         src/blackjack_app.cc)
 
 list(APPEND TEST_FILES tests/test_card.cc
