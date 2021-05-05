@@ -5,15 +5,6 @@ namespace blackjack {
 
 GameEngine::GameEngine() = default;
 
-GameEngine::GameEngine(size_t deck_count, bool load_textures) {
-  if (load_textures) {
-    LoadTextures();
-  }
-  for (size_t i = 0; i < deck_count - 1; i++) {
-    deck_.AddDeck();
-  }
-}
-
 
 void GameEngine::AddPlayer(const string &name, float buy_in) {
   // Check for existing user

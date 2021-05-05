@@ -35,13 +35,7 @@ class GameEngine {
  public:
   /** Default Constructor */
   GameEngine();
-
-  /** Constructor meant for GUI, allowing different deck count and textures to be loaded
-   * 
-   * @param deck_count number of decks to play with
-   * @param load_textures whether to load textures to the cards or not
-   */
-  GameEngine(size_t deck_count, bool load_textures);
+  
 
   /** Adds a player to the game
    * 
