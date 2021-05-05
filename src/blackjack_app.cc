@@ -48,10 +48,13 @@ BlackjackApp::BlackjackApp() {
   shuffle_sound_ = ci::audio::Voice::create(sourceFile);
 }
 
+void BlackjackApp::update() {
+  status_ = engine_.GetGameStatus();
+}
 // todo: turn magic numbers into constants
 void BlackjackApp::draw() {
   // TODO: Resize cards
-  status_ = engine_.GetGameStatus();
+  update();
   ci::gl::clear(kBackgroundColor);
   ci::gl::setMatricesWindow(getWindowSize());
 
@@ -72,7 +75,7 @@ void BlackjackApp::draw() {
       vec2(getWindowCenter().x, getWindowHeight() - kMargin - kFontSize),
       ci::Color("black"),
       ci::Font("Arial", (float) kFontSize));
-  ci::gl::drawStringCentered("During Round: [H] - Hit. [S] - Stand. [D] - Double Down.",
+  ci::gl::drawStringCentered("During Round: [H] - Hit, [S] - Stand, [D] - Double Down | After Round: [BACKSPACE] - Start New Round",
                              vec2(getWindowCenter().x, getWindowHeight() - kMargin),
                              ci::Color("black"),
                              ci::Font("Arial", (float) kFontSize));
@@ -105,12 +108,10 @@ void BlackjackApp::draw() {
 
 }
 
-// todo: implement this to get pre-round setup working
 void BlackjackApp::keyDown(ci::app::KeyEvent event) {
   // Before the round starts, user may add/remove player, and players increase/decrease bets
   if (!round_started_) {
     switch (event.getCode()) {
-      /* The five keys below are only valid commands before each round begins */
       case ci::app::KeyEvent::KEY_RETURN:
         // Once everyone has confirmed their bets, start the round
         if (bet_confirmed && !round_started_) {
@@ -161,24 +162,34 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
     }
   }
   // During the round, players may hit stand or double down when it is their turn
+  // todo: implement error handling
+  
   switch (event.getCode()) {
-    /* The three keys below are only valid during each round */
     case ci::app::KeyEvent::KEY_h:
-      // Hit
-      return;
+      engine_.PlayerPlays("hit");
+      break;
     case ci::app::KeyEvent::KEY_s:
-      // Stand
-      return;
+      engine_.PlayerPlays("stand");
+      break;
     case ci::app::KeyEvent::KEY_d:
-      // Double down
-      return;
+      engine_.PlayerPlays("double");
+      break;
+    case ci::app::KeyEvent::KEY_BACKSPACE:
+      if (status_.player_to_act == nullptr) {
+        engine_.ResetHands();
+        round_started_ = false;
+      }
   }
+  update();
+  if (round_started_ && status_.player_to_act == nullptr) { // No one left to act, so continue to end of the game
+    engine_.DealerPlays();
+    engine_.SettleBets();
+  }
+  draw();
 }
 
 void BlackjackApp::DisplayPlayerInfo(float game_area_height) {
   // todo: extend to multiple players and put coordinates for display as member variable in player class
-  status_ = engine_.GetGameStatus();
-
   // Display the player balance
   float balance = status_.players.front()->GetBalance();
 

@@ -93,6 +93,16 @@ void GameEngine::PlayerPlays(string command) {
 }
 
 void GameEngine::DealerPlays() {
+  bool players_done = true;
+  for (auto player : players_) {
+    if (players_done && !(player.GetHand().HasBlackjack() || player.GetHand().IsBust()))
+      players_done = false;
+  }
+  
+  // Don't need to draw more cards if all players are done and don't need to compare hand to dealer
+  if (players_done)
+    return;
+
   dealer_.DealerPlay(&deck_);
 }
 

@@ -23,9 +23,9 @@ namespace blackjack {
  *     - Display players' cards then dealer's cards with one face up, one face down
  *  7. (X) Dealer checks for blackjack if ace/ten card, then settle bets if he has it (go to end). If not, continue
  *     - Show message for any player w/ blackjack
- *  8. Each player takes action until out of moves or bust
- *  9. If some players not bust or blackjack, dealer shows card and dealer plays. If not bust, continue.
- *  10. Compare card value for player and dealer, pay players off accordingly.
+ *  8. (X) Each player takes action until out of moves or bust
+ *  9. (X) If some players not bust or blackjack, dealer shows card and dealer plays. If not bust, continue.
+ *  10. (X) Compare card value for player and dealer, pay players off accordingly.
  *     - Show an game result message.
  */
 class BlackjackApp : public ci::app::App {
@@ -33,10 +33,11 @@ class BlackjackApp : public ci::app::App {
   /** Default constructor */
   BlackjackApp();
 
+  /** Updates the game status */
+  void update() override;
+  
   /** Called before the start of every round */
   void draw() override;
-
-//   void update() override;
 
   /** Before each round, allow user to add/remove player and adjust bets */
   void keyDown(ci::app::KeyEvent event) override;
