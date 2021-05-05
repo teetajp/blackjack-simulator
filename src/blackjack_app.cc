@@ -75,10 +75,11 @@ void BlackjackApp::draw() {
       vec2(getWindowCenter().x, getWindowHeight() - kMargin - kFontSize),
       ci::Color("black"),
       ci::Font("Arial", (float) kFontSize));
-  ci::gl::drawStringCentered("During Round: [H] - Hit, [S] - Stand, [D] - Double Down | After Round: [BACKSPACE] - Start New Round",
-                             vec2(getWindowCenter().x, getWindowHeight() - kMargin),
-                             ci::Color("black"),
-                             ci::Font("Arial", (float) kFontSize));
+  ci::gl::drawStringCentered(
+      "During Round: [H] - Hit, [S] - Stand, [D] - Double Down | After Round: [BACKSPACE] - Start New Round",
+      vec2(getWindowCenter().x, getWindowHeight() - kMargin),
+      ci::Color("black"),
+      ci::Font("Arial", (float) kFontSize));
 
   // Draw a divider between instructions and the game area
   ci::gl::color(ci::Color("black"));
@@ -163,16 +164,13 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
   }
   // During the round, players may hit stand or double down when it is their turn
   // todo: implement error handling
-  
+
   switch (event.getCode()) {
-    case ci::app::KeyEvent::KEY_h:
-      engine_.PlayerPlays("hit");
+    case ci::app::KeyEvent::KEY_h:engine_.PlayerPlays("hit");
       break;
-    case ci::app::KeyEvent::KEY_s:
-      engine_.PlayerPlays("stand");
+    case ci::app::KeyEvent::KEY_s:engine_.PlayerPlays("stand");
       break;
-    case ci::app::KeyEvent::KEY_d:
-      engine_.PlayerPlays("double");
+    case ci::app::KeyEvent::KEY_d:engine_.PlayerPlays("double");
       break;
     case ci::app::KeyEvent::KEY_BACKSPACE:
       if (status_.player_to_act == nullptr) {
