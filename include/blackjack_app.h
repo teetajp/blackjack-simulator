@@ -47,7 +47,6 @@ class BlackjackApp : public ci::app::App {
   static const size_t kWindowSize = 900; // default window size in pixels
   static const size_t kMargin = 50; // margin from the window
   static const size_t kFontSize = 30; // font size for the text telling playings what keys do what
-  static const size_t kMaxPlayers = 3; // the maximum number of players/hand in this table (for this app)
   const ci::Color kBackgroundColor = ci::Color("green"); // casino green for the blackjack table
   const vector<float> kBetSizes = {0.f, 1.f, 5.f, 10.f, 20.f, 50.f, 100.f};
   const string kDefaultPlayerName = "Player";
@@ -65,7 +64,6 @@ class BlackjackApp : public ci::app::App {
   GameStatus status_; // players' information in the game
   bool round_started_ = false; // whether the round has started  
   bool bet_confirmed = false; // whether a player has confirmed their bet (turn into vector for 2+ players)
-  bool bets_settled = false; // whether bets are settled
   
   /** Displays the balance and bet for each player */
   void DisplayPlayerInfo(float game_area_height);
