@@ -37,7 +37,6 @@ namespace blackjack {
 
 BlackjackApp::BlackjackApp(){
   ci::app::setWindowSize((int) ((double) kAspectRatio * kWindowSize), (int) kWindowSize);
-  engine_ = GameEngine(4, true);
   engine_.AddPlayer(kDefaultPlayerName, 100.f); // Single player for now
   card_back_ = ci::gl::Texture2d::create(ci::loadImage(ci::app::loadAsset("sprites/card_back_01.png")));
   card_height_ = card_back_->getHeight();
