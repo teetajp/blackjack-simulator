@@ -4,7 +4,7 @@
 
 namespace blackjack {
 
-static const char * ResultStrings[] = { "Won", "Tied", "Lost", "In Progress", "Not in this Round" };
+static const char * ResultStrings[] = { "Won", "Tied", "Lost", "Awaiting Comparison", "In Progress", "Not in this Round" };
 
 Player::Player() : name_("Player " + std::to_string(rand())), balance_(100.0f), bet_(0.0f), result_(NotPlaying) {}
 
