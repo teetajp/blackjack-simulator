@@ -15,7 +15,7 @@ void Hand::ResetHand() {
   has_ace_ = false;
 }
 
-vector<Card> Hand::GetCards() const {
+const vector<Card>& Hand::GetCards() const {
   return cards_;
 }
 

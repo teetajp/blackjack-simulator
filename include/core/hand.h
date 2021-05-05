@@ -25,7 +25,7 @@ class Hand {
   size_t CalculateHandValue() const;
 
   /** Returns a copied vector of cards in the hand */
-  vector<Card> GetCards() const;
+  const vector<Card>& GetCards() const;
 
   /** Checks whether the hand contains an Ace and a 10-card (Ten, Jack, Queen, King)
     * 

@@ -48,7 +48,7 @@ class Card {
   Rank GetRank() const;
 
   /** Returns the sprite */
-  ci::gl::Texture2dRef GetSprite() const;
+  const ci::gl::Texture2dRef& GetSprite() const;
   
   /** Returns a string describing the card */
   string ToString() const;

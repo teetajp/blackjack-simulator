@@ -80,7 +80,7 @@ class GameEngine {
   /** Gets the status of the game, including each player's information and dealer's hand */
   GameStatus GetGameStatus();
   
-  /** Loads the card textures into each card in the deck */
+  /** Replaces the deck with a deck where each card has a sprite */
   void LoadTextures();
   
  private:

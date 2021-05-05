@@ -14,6 +14,10 @@ Card::Rank Card::GetRank() const {
   return rank_;
 }
 
+const ci::gl::Texture2dRef & Card::GetSprite() const {
+  return sprite_;
+}
+
 string Card::ToString() const {
   string description;
   

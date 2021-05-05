@@ -52,7 +52,7 @@ namespace blackjack {
    const string kDefaultPlayerName = "Player";
 
    /* Resources */
-  // todo: put some of the member variables here into their respective classes
+   // todo: put some of the member variables here into their respective classes
    ci::gl::Texture2dRef card_back_; // sprite of the card back
    ci::audio::VoiceRef shuffle_sound_; // sound to play when deck is shuffled
    
@@ -70,6 +70,6 @@ namespace blackjack {
   void DisplayCards();
   
   /** Displays the dealer's cards */
-  void DisplayDealerCards();
+//  void DisplayDealerCards();
  };
 }

@@ -39,6 +39,7 @@ namespace blackjack {
 BlackjackApp::BlackjackApp() {
   ci::app::setWindowSize((int) ((double) kAspectRatio * kWindowSize), (int) kWindowSize);
   engine_.AddPlayer(kDefaultPlayerName, 100.f); // Single player for now
+  engine_.LoadTextures();
   card_back_ = ci::gl::Texture2d::create(ci::loadImage(ci::app::loadAsset("sprites/card_back_01.png")));
   bets_[kDefaultPlayerName] = 0;
   ci::audio::SourceFileRef sourceFile = ci::audio::load( ci::app::loadAsset( "sounds/shuffling-cards-4.wav" ) );
@@ -48,6 +49,7 @@ BlackjackApp::BlackjackApp() {
 // todo: turn magic numbers into constants
 void BlackjackApp::draw() {
   // TODO: Resize cards
+  status_ = engine_.GetGameStatus();
   ci::gl::clear(kBackgroundColor);
   ci::gl::setMatricesWindow( getWindowSize());
   
@@ -80,16 +82,9 @@ void BlackjackApp::draw() {
 
   DisplayPlayerInfo(game_area_height);
   
-  /* Create bounds and shade in the background */
-  // Good card gap for stacking two is 15-20 on the x
-//  vec2 pixel_top_left(0, 0);
-//  vec2 pixel_bottom_right(kMargin+500, kMargin+500);
-//
-//  ci::Rectf pixel_bounding_box(pixel_top_left, pixel_bottom_right);
-
- 
-//  ci::gl::drawSolidRect(pixel_bounding_box);
-//  
+  if (round_started_) {
+    DisplayCards();
+  }
  
   // todo: dealer on top, deck on side, with two+ holes for dealer cards
   // todo: players on bottom, up to however many players, get 1 player first
@@ -111,7 +106,7 @@ void BlackjackApp::keyDown(ci::app::KeyEvent event) {
           engine_.DealCards();
           // todo: display cards
           round_started_ = true;
-          status_ = engine_.GetGameStatus();
+          draw();
           // todo: call draw() and implement control flow for when the game starts 
         } else if (!bet_confirmed && !round_started_) { // Player is confirming their bet
           bet_confirmed = true;
@@ -171,7 +166,10 @@ void BlackjackApp::DisplayPlayerInfo(size_t game_area_height) {
   
   // Display the player balance
   float balance = status_.players.front()->GetBalance();
-  balance -= bets_[kDefaultPlayerName]; // Bet has not been placed, so show theoretical balance change
+  
+  if (!round_started_) {
+    balance -= bets_[kDefaultPlayerName]; // Bet has not been placed, so show theoretical balance change
+  }
 
   // Convert balance and bet to a two-decimal point string
   // Snippet from: https://stackoverflow.com/questions/29200635/convert-float-to-string-with-precision-number-of-decimal-digits-specified
@@ -193,9 +191,27 @@ void BlackjackApp::DisplayPlayerInfo(size_t game_area_height) {
   }
 
   void BlackjackApp::DisplayCards() {
+    ci::gl::color(ci::Color("white"));
     
+    const vector<Card>& player_cards = status_.players.front()->GetHand().GetCards();
+    
+    for (size_t i = 0; i < player_cards.size(); i++) {
+      string a = player_cards[i].ToString();
+      std::cout << a << std::endl;
+      
+      const ci::gl::Texture2dRef& card_sprite = player_cards[i].GetSprite();
+      size_t card_gap = i * 25;
+      size_t game_area_height = getWindowHeight() - 2 * kMargin - 2 * kInstructionsFontSize;
+      ci::Rectf card_rect((float) getWindowCenter().x - card_sprite->getWidth() + card_gap, (float) game_area_height - card_sprite->getHeight() - kMargin,
+                          (float) getWindowCenter().x + card_gap, (float) game_area_height - kMargin);
+      ci::gl::draw(card_sprite, card_rect);
+    }
   }
-  void BlackjackApp::DisplayDealerCards() {
-  }
+  
+void DrawCards(const vector<Card>& cards) {
+  
 }
+  
+  
+} // namespace blackjack
 
